@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -g -nostartfiles -Map=test_stm32f103.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\FreeRTOS_stm32f103 -TC:\CooCox\CoIDE\configuration\ProgramData\FreeRTOS_stm32f103/arm-gcc-link.ld -g">
+      <target file="test_stm32f103.elf" lastModified="1464da28ef6">
+         <source file="..\obj\stm32f10x_tim.o" lastModified="1464d966b50"/>
+         <source file="..\obj\system_stm32f10x.o" lastModified="1464d966b9f"/>
+         <source file="..\obj\startup_stm32f10x_md.o" lastModified="1464d966bc7"/>
+         <source file="..\obj\stm32f10x_gpio.o" lastModified="1464d966c20"/>
+         <source file="..\obj\main.o" lastModified="1464da28d23"/>
+         <source file="..\obj\timers.o" lastModified="1464d966c79"/>
+         <source file="..\obj\stm32f10x_rcc.o" lastModified="1464d966ce6"/>
+         <source file="..\obj\hd44780.o" lastModified="1464da19023"/>
+         <source file="..\obj\tasks.o" lastModified="1464d966dac"/>
+         <source file="..\obj\stm32f10x_usart.o" lastModified="1464d966dfc"/>
+         <source file="..\obj\list.o" lastModified="1464d966e23"/>
+         <source file="..\obj\stm32f10x_flash.o" lastModified="1464d966e7d"/>
+         <source file="..\obj\port.o" lastModified="1464d966ea4"/>
+         <source file="..\obj\queue.o" lastModified="1464d966ef4"/>
+         <source file="..\obj\croutine.o" lastModified="1464d966f2f"/>
+         <source file="..\obj\event_groups.o" lastModified="1464d966f6a"/>
+         <source file="..\obj\heap_2.o" lastModified="1464d966fa6"/>
+      </target>
+   </processor>
+</history>
