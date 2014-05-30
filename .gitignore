@@ -23,4 +23,6 @@
 *.hex
 
 *.coproj
+*.cogui
+*.comarker
 *.exe
