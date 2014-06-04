@@ -6,23 +6,34 @@
 #include "task.h"
 #include "queue.h"
 #include "hd44780/hd44780.h"
+#include "clock/clock.h"
 
 static void prvSetupHardware( void );
 static void prvLedBlink1( void *pvParameters );
-static void prvLedBlink2( void *pvParameters );
+static void prvLcdShow( void *pvParameters );
+static void prvPutSymb( void *pvParameters );
+static void prvInitall( void *pvParameters );
 void vApplicationTickHook( void );
+
+xQueueHandle xQueue;
 
 int main(void)
 {
-
-
+	InitRCC();
+	init_bad_clock_inter();
     prvSetupHardware();
+
+    xQueue = xQueueCreate(16, sizeof(unsigned char));
+    if (xQueue != NULL) {
+
+    }
+
+    xTaskCreate(prvInitall,(signed char*)"Initall",configMINIMAL_STACK_SIZE,
+            NULL, tskIDLE_PRIORITY + 1, NULL);
 
     xTaskCreate(prvLedBlink1,(signed char*)"LED1",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 
-    xTaskCreate(prvLedBlink2,(signed char*)"LED2",configMINIMAL_STACK_SIZE,
-            NULL, tskIDLE_PRIORITY + 1, NULL);
 
     /* Start the scheduler. */
     vTaskStartScheduler();
@@ -49,14 +60,47 @@ void prvLedBlink1( void *pvParameters )
 	}
  }
 
-void prvLedBlink2( void *pvParameters )
+void prvLcdShow( void *pvParameters )
 {
-    GPIO_SetBits(GPIOB,GPIO_Pin_1);
+    unsigned char symb;
+    portBASE_TYPE xStatus;
 
+    while(1){
+    	xStatus = xQueueReceive(xQueue, &symb, portMAX_DELAY);
+    	if (xStatus == pdPASS) {
+    		lcd_putc(symb);
+    	}
+    }
+}
+
+void prvPutSymb( void *pvParameters ){
+	unsigned char symb=31;
+	portBASE_TYPE xStatus;
+
+	while(1){
+		xStatus = xQueueSendToBack(xQueue, &symb, 0);
+		if (xStatus != pdPASS) {
+
+		}
+		else{
+			vTaskDelay(2000);
+			if(symb < 127) symb++;
+			else symb = 31;
+		}
+	}
+}
+
+void prvInitall( void *pvParameters )
+{
 	lcd_init();
-	lcd_clrscr();
-	lcd_prints("FreeRTOS!-v1.0.0\0");
-    while(1);
+
+    xTaskCreate(prvLcdShow,(signed char*)"LcdShow",configMINIMAL_STACK_SIZE,
+            NULL, tskIDLE_PRIORITY + 1, NULL);
+
+    xTaskCreate(prvPutSymb,(signed char*)"PutSymb",configMINIMAL_STACK_SIZE,
+            NULL, tskIDLE_PRIORITY + 1, NULL);
+
+    vTaskDelete(NULL);
 }
 
 void vApplicationTickHook( void )
