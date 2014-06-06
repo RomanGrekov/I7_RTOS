@@ -1,21 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dependencies>
-   <includePath signature="/I..\..\..\workspace\I7_RTOS\FreeRTOS /I..\..\..\workspace\I7_RTOS\stm_lib\inc /I..\..\..\workspace\I7_RTOS /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\include /I..\..\..\workspace\I7_RTOS\cmsis /I..\..\..\workspace /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable\ARM_CM3 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source /I..\..\..\workspace\I7_RTOS\hd44780 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable /I..\..\..\workspace\I7_RTOS\clock /I..\..\.. /I..\..\..\workspace\I7_RTOS\stm_lib /I..\..\..\workspace\I7_RTOS\cmsis_boot">
-      <source file="..\..\..\cmsis\core_cm3.h" lastModified="146515d8e64">
+   <includePath signature="/I..\..\..\workspace\I7_RTOS\FreeRTOS /I..\..\..\workspace\I7_RTOS\stm_lib\inc /I..\..\..\workspace\I7_RTOS\USART /I..\..\..\workspace\I7_RTOS /I..\..\..\workspace\I7_RTOS\common /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\include /I..\..\..\workspace\I7_RTOS\cmsis /I..\..\..\workspace /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable\ARM_CM3 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source /I..\..\..\workspace\I7_RTOS\hd44780 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable /I..\..\..\workspace\I7_RTOS\clock /I..\..\.. /I..\..\..\workspace\I7_RTOS\stm_lib /I..\..\..\workspace\I7_RTOS\cmsis_boot">
+      <source file="..\..\..\FreeRTOS\source\include\semphr.h" lastModified="1466a908635">
+         <include file="..\..\..\FreeRTOS\source\include\queue.h"/>
+      </source>
+      <source file="..\..\..\cmsis\core_cm3.h" lastModified="1466a908a59">
          <include file="..\..\..\cmsis\core_cmInstr.h"/>
          <include file="..\..\..\cmsis\core_cmFunc.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\timers.h" lastModified="146515d8a68">
+      <source file="..\..\..\common\common_funcs.c" lastModified="1466aa57a3b">
+         <include file="..\..\..\common\common_funcs.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\timers.h" lastModified="1466a908635">
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_rcc.h" lastModified="146515d8aa4">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_rcc.h" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_gpio.c" lastModified="146515d8ab8">
+      <source file="..\..\..\stm_lib\src\stm32f10x_gpio.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_gpio.h"/>
          <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\portable.h" lastModified="146515e557e">
+      <source file="..\..\..\FreeRTOS\source\include\portable.h" lastModified="1466a915155">
          <include file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h"/>
          <include file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h"/>
          <include file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h"/>
@@ -24,222 +30,332 @@
          <include file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h"/>
          <include file="..\..\..\FreeRTOS\source\include\mpu_wrappers.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\system_stm32f10x.h" lastModified="146515d8a9a">
+      <source file="..\..\..\cmsis_boot\system_stm32f10x.h" lastModified="1466a9086ad">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\croutine.h" lastModified="146515d8a4a">
+      <source file="..\..\..\FreeRTOS\source\include\croutine.h" lastModified="1466a90862b">
          <include file="..\..\..\FreeRTOS\source\include\list.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\system_stm32f10x.c" lastModified="146515d8a9a">
+      <source file="..\..\..\cmsis_boot\system_stm32f10x.c" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\queue.c" lastModified="146515d9242">
+      <source file="..\..\..\FreeRTOS\source\queue.c" lastModified="1466a908e37">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
          <include file="..\..\..\FreeRTOS\source\include\queue.h"/>
          <include file="..\..\..\FreeRTOS\source\include\croutine.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\task.h" lastModified="146515d8a68">
+      <source file="..\..\..\FreeRTOS\source\include\task.h" lastModified="1466a908635">
          <include file="..\..\..\FreeRTOS\source\include\list.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\stm32f10x_conf.h" lastModified="146515d8a90">
+      <source file="..\..\..\cmsis_boot\stm32f10x_conf.h" lastModified="1466a9086ad">
       </source>
-      <source file="..\..\..\cmsis\core_cmFunc.h" lastModified="146515d924c">
+      <source file="..\..\..\cmsis\core_cmFunc.h" lastModified="1466a908e41">
       </source>
-      <source file="..\..\..\FreeRTOS\source\croutine.c" lastModified="146515d8a4a">
+      <source file="..\..\..\FreeRTOS\source\croutine.c" lastModified="1466a90862b">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
          <include file="..\..\..\FreeRTOS\source\include\croutine.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\port.c" lastModified="146515d8a72">
+      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\port.c" lastModified="1466a90865d">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_usart.h" lastModified="146515d8aae">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_usart.h" lastModified="1466a9086c1">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\timers.c" lastModified="146515d8e5a">
+      <source file="..\..\..\FreeRTOS\source\timers.c" lastModified="1466a908a4f">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
          <include file="..\..\..\FreeRTOS\source\include\queue.h"/>
          <include file="..\..\..\FreeRTOS\source\include\timers.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\tasks.c" lastModified="146515d9a12">
+      <source file="..\..\..\FreeRTOS\source\tasks.c" lastModified="1466a909607">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
          <include file="..\..\..\FreeRTOS\source\include\timers.h"/>
          <include file="..\..\..\FreeRTOS\source\include\StackMacros.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\startup\startup_stm32f10x_md.c" lastModified="146515d8a86">
+      <source file="..\..\..\cmsis_boot\startup\startup_stm32f10x_md.c" lastModified="1466a90867b">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\mpu_wrappers.h" lastModified="146515d8a5e">
+      <source file="..\..\..\FreeRTOS\source\include\mpu_wrappers.h" lastModified="1466a908635">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\StackMacros.h" lastModified="146515d8a4a">
+      <source file="..\..\..\FreeRTOS\source\include\StackMacros.h" lastModified="1466a90862b">
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_tim.c" lastModified="146515d8ac2">
+      <source file="..\..\..\stm_lib\src\stm32f10x_tim.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_tim.h"/>
          <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_usart.c" lastModified="146515d8ac2">
+      <source file="..\..\..\stm_lib\src\stm32f10x_usart.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_usart.h"/>
          <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
       </source>
-      <source file="..\..\..\FreeRTOSConfig.h" lastModified="146515d8a7c">
+      <source file="..\..\..\FreeRTOSConfig.h" lastModified="1466fd42fc0">
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_flash.h" lastModified="146515d8aa4">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_flash.h" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\cmsis\core_cmInstr.h" lastModified="146515d924c">
+      <source file="..\..\..\cmsis\core_cmInstr.h" lastModified="1466a908e4b">
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_flash.c" lastModified="146515d8ab8">
+      <source file="..\..\..\stm_lib\src\stm32f10x_flash.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_flash.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\event_groups.c" lastModified="146515d8e32">
+      <source file="..\..\..\FreeRTOS\source\event_groups.c" lastModified="1466a908a13">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
          <include file="..\..\..\FreeRTOS\source\include\timers.h"/>
          <include file="..\..\..\FreeRTOS\source\include\event_groups.h"/>
       </source>
-      <source file="..\..\..\hd44780\hd44780.h" lastModified="146515d8aa4">
+      <source file="..\..\..\hd44780\hd44780.h" lastModified="1466a9086ad">
          <include file="..\..\..\hd44780\mac.h"/>
       </source>
-      <source file="..\..\..\hd44780\hd44780.c" lastModified="146515d8aa4">
+      <source file="..\..\..\hd44780\hd44780.c" lastModified="1466a9086ad">
          <include file="..\..\..\hd44780\hd44780.h"/>
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_rcc.c" lastModified="146515d8ab8">
+      <source file="..\..\..\stm_lib\src\stm32f10x_rcc.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\stm32f10x.h" lastModified="146515d8e78">
+      <source file="..\..\..\cmsis_boot\stm32f10x.h" lastModified="1466a908a95">
          <include file="..\..\..\cmsis\core_cm3.h"/>
          <include file="..\..\..\cmsis_boot\system_stm32f10x.h"/>
          <include file="..\..\..\cmsis_boot\stm32f10x_conf.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\event_groups.h" lastModified="146515d8a4a">
+      <source file="..\..\..\FreeRTOS\source\include\event_groups.h" lastModified="1466a90862b">
          <include file="..\..\..\FreeRTOS\source\include\timers.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h" lastModified="146515d8a72">
+      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h" lastModified="1466a90865d">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\queue.h" lastModified="146515d8a68">
-      </source>
-      <source file="..\..\..\FreeRTOS\source\include\projdefs.h" lastModified="146515d8a5e">
-      </source>
-      <source file="..\..\..\hd44780\mac.h" lastModified="146515d8aa4">
+      <source file="..\..\..\USART\usart.h" lastModified="1466cbf3fe3">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_gpio.h" lastModified="146515d8aa4">
+      <source file="..\..\..\FreeRTOS\source\include\queue.h" lastModified="1466a908635">
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\projdefs.h" lastModified="1466a908635">
+      </source>
+      <source file="..\..\..\hd44780\mac.h" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_tim.h" lastModified="146515d8aae">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_gpio.h" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\MemMang\heap_2.c" lastModified="146515d8e32">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_tim.h" lastModified="1466a9086b7">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\MemMang\heap_2.c" lastModified="1466a908a13">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
       </source>
-      <source file="..\..\..\clock\clock.h" lastModified="14651c120f9">
+      <source file="..\..\..\clock\clock.h" lastModified="1466a908671">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
          <include file="..\..\..\stm_lib\inc\stm32f10x_gpio.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\list.h" lastModified="146515d8a5e">
+      <source file="..\..\..\FreeRTOS\source\include\list.h" lastModified="1466a908635">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\FreeRTOS.h" lastModified="146515d921a">
+      <source file="..\..\..\FreeRTOS\source\include\FreeRTOS.h" lastModified="1466a908dfb">
          <include file="..\..\..\FreeRTOS\source\include\projdefs.h"/>
          <include file="..\..\..\FreeRTOSConfig.h"/>
          <include file="..\..\..\FreeRTOS\source\include\portable.h"/>
       </source>
-      <source file="..\..\..\clock\clock.c" lastModified="14652778b34">
+      <source file="..\..\..\clock\clock.c" lastModified="1466a908671">
          <include file="..\..\..\clock\clock.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\list.c" lastModified="146515d8e50">
+      <source file="..\..\..\common\common_funcs.h" lastModified="1466aa9ddf2">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\list.c" lastModified="1466a908a1d">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\list.h"/>
       </source>
    </includePath>
-   <includePath signature="/I..\..\..\workspace\I7_RTOS\FreeRTOS /I..\..\..\workspace\I7_RTOS\stm_lib\inc /I..\..\..\workspace\I7_RTOS /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\include /I..\..\..\workspace\I7_RTOS\cmsis /I..\..\..\workspace /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable\ARM_CM3 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source /I..\..\..\workspace\I7_RTOS\hd44780 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable /I..\..\.. /I..\..\..\workspace\I7_RTOS\stm_lib /I..\..\..\workspace\I7_RTOS\cmsis_boot">
-      <source file="..\..\..\FreeRTOS\source\include\timers.h" lastModified="146515d8a68">
+   <includePath signature="/I..\..\..\workspace\I7_RTOS\FreeRTOS /I..\..\..\workspace\I7_RTOS\stm_lib\inc /I..\..\..\workspace\I7_RTOS /I..\..\..\workspace\I7_RTOS\common /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\include /I..\..\..\workspace\I7_RTOS\cmsis /I..\..\..\workspace /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable\ARM_CM3 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source /I..\..\..\workspace\I7_RTOS\hd44780 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable /I..\..\..\workspace\I7_RTOS\clock /I..\..\.. /I..\..\..\workspace\I7_RTOS\stm_lib /I..\..\..\workspace\I7_RTOS\cmsis_boot">
+      <source file="..\..\..\common\common_funcs.c" lastModified="1466aa57a3b">
+         <include file="..\..\..\common\common_funcs.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\timers.h" lastModified="1466a908635">
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_rcc.h" lastModified="146515d8aa4">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_rcc.h" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_gpio.c" lastModified="146515d8ab8">
+      <source file="..\..\..\stm_lib\src\stm32f10x_gpio.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_gpio.h"/>
          <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\system_stm32f10x.h" lastModified="146515d8a9a">
+      <source file="..\..\..\cmsis_boot\system_stm32f10x.h" lastModified="1466a9086ad">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\croutine.h" lastModified="146515d8a4a">
+      <source file="..\..\..\FreeRTOS\source\include\croutine.h" lastModified="1466a90862b">
          <include file="..\..\..\FreeRTOS\source\include\list.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\system_stm32f10x.c" lastModified="146515d8a9a">
+      <source file="..\..\..\cmsis_boot\system_stm32f10x.c" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\task.h" lastModified="146515d8a68">
+      <source file="..\..\..\FreeRTOS\source\include\task.h" lastModified="1466a908635">
          <include file="..\..\..\FreeRTOS\source\include\list.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\stm32f10x_conf.h" lastModified="146515d8a90">
+      <source file="..\..\..\cmsis_boot\stm32f10x_conf.h" lastModified="1466a9086ad">
       </source>
-      <source file="..\..\..\FreeRTOS\source\croutine.c" lastModified="146515d8a4a">
+      <source file="..\..\..\FreeRTOS\source\croutine.c" lastModified="1466a90862b">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
          <include file="..\..\..\FreeRTOS\source\include\croutine.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\port.c" lastModified="146515d8a72">
+      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\port.c" lastModified="1466a90865d">
          <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
          <include file="..\..\..\FreeRTOS\source\include\task.h"/>
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_usart.h" lastModified="146515d8aae">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_usart.h" lastModified="1466a9086c1">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\cmsis_boot\startup\startup_stm32f10x_md.c" lastModified="146515d8a86">
+      <source file="..\..\..\cmsis_boot\startup\startup_stm32f10x_md.c" lastModified="1466a90867b">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\mpu_wrappers.h" lastModified="146515d8a5e">
+      <source file="..\..\..\FreeRTOS\source\include\mpu_wrappers.h" lastModified="1466a908635">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\StackMacros.h" lastModified="146515d8a4a">
+      <source file="..\..\..\FreeRTOS\source\include\StackMacros.h" lastModified="1466a90862b">
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_tim.c" lastModified="146515d8ac2">
+      <source file="..\..\..\stm_lib\src\stm32f10x_tim.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_tim.h"/>
          <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_usart.c" lastModified="146515d8ac2">
+      <source file="..\..\..\stm_lib\src\stm32f10x_usart.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_usart.h"/>
          <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
       </source>
-      <source file="..\..\..\FreeRTOSConfig.h" lastModified="146515d8a7c">
-      </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_flash.h" lastModified="146515d8aa4">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_flash.h" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_flash.c" lastModified="146515d8ab8">
+      <source file="..\..\..\stm_lib\src\stm32f10x_flash.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_flash.h"/>
       </source>
-      <source file="..\..\..\hd44780\hd44780.h" lastModified="146515d8aa4">
+      <source file="..\..\..\hd44780\hd44780.h" lastModified="1466a9086ad">
          <include file="..\..\..\hd44780\mac.h"/>
       </source>
-      <source file="..\..\..\hd44780\hd44780.c" lastModified="146515d8aa4">
+      <source file="..\..\..\hd44780\hd44780.c" lastModified="1466a9086ad">
          <include file="..\..\..\hd44780\hd44780.h"/>
       </source>
-      <source file="..\..\..\stm_lib\src\stm32f10x_rcc.c" lastModified="146515d8ab8">
+      <source file="..\..\..\stm_lib\src\stm32f10x_rcc.c" lastModified="1466a9086c1">
          <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\event_groups.h" lastModified="146515d8a4a">
+      <source file="..\..\..\FreeRTOS\source\include\event_groups.h" lastModified="1466a90862b">
          <include file="..\..\..\FreeRTOS\source\include\timers.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h" lastModified="146515d8a72">
+      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h" lastModified="1466a90865d">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\queue.h" lastModified="146515d8a68">
+      <source file="..\..\..\FreeRTOS\source\include\queue.h" lastModified="1466a908635">
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\projdefs.h" lastModified="146515d8a5e">
+      <source file="..\..\..\FreeRTOS\source\include\projdefs.h" lastModified="1466a908635">
       </source>
-      <source file="..\..\..\hd44780\mac.h" lastModified="146515d8aa4">
+      <source file="..\..\..\hd44780\mac.h" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_gpio.h" lastModified="146515d8aa4">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_gpio.h" lastModified="1466a9086ad">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\stm_lib\inc\stm32f10x_tim.h" lastModified="146515d8aae">
+      <source file="..\..\..\stm_lib\inc\stm32f10x_tim.h" lastModified="1466a9086b7">
          <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
       </source>
-      <source file="..\..\..\FreeRTOS\source\include\list.h" lastModified="146515d8a5e">
+      <source file="..\..\..\clock\clock.h" lastModified="1466a908671">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+         <include file="..\..\..\stm_lib\inc\stm32f10x_gpio.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\list.h" lastModified="1466a908635">
+      </source>
+      <source file="..\..\..\clock\clock.c" lastModified="1466a908671">
+         <include file="..\..\..\clock\clock.h"/>
+      </source>
+      <source file="..\..\..\common\common_funcs.h" lastModified="1466aa9ddf2">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+   </includePath>
+   <includePath signature="/I..\..\..\workspace\I7_RTOS\FreeRTOS /I..\..\..\workspace\I7_RTOS\stm_lib\inc /I..\..\..\workspace\I7_RTOS /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\include /I..\..\..\workspace\I7_RTOS\cmsis /I..\..\..\workspace /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable\ARM_CM3 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source /I..\..\..\workspace\I7_RTOS\hd44780 /I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable /I..\..\..\workspace\I7_RTOS\clock /I..\..\.. /I..\..\..\workspace\I7_RTOS\stm_lib /I..\..\..\workspace\I7_RTOS\cmsis_boot">
+      <source file="..\..\..\FreeRTOS\source\include\timers.h" lastModified="1466a908635">
+         <include file="..\..\..\FreeRTOS\source\include\task.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\inc\stm32f10x_rcc.h" lastModified="1466a9086ad">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\src\stm32f10x_gpio.c" lastModified="1466a9086c1">
+         <include file="..\..\..\stm_lib\inc\stm32f10x_gpio.h"/>
+         <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
+      </source>
+      <source file="..\..\..\cmsis_boot\system_stm32f10x.h" lastModified="1466a9086ad">
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\croutine.h" lastModified="1466a90862b">
+         <include file="..\..\..\FreeRTOS\source\include\list.h"/>
+      </source>
+      <source file="..\..\..\cmsis_boot\system_stm32f10x.c" lastModified="1466a9086ad">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\task.h" lastModified="1466a908635">
+         <include file="..\..\..\FreeRTOS\source\include\list.h"/>
+      </source>
+      <source file="..\..\..\cmsis_boot\stm32f10x_conf.h" lastModified="1466a9086ad">
+      </source>
+      <source file="..\..\..\FreeRTOS\source\croutine.c" lastModified="1466a90862b">
+         <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
+         <include file="..\..\..\FreeRTOS\source\include\task.h"/>
+         <include file="..\..\..\FreeRTOS\source\include\croutine.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\port.c" lastModified="1466a90865d">
+         <include file="..\..\..\FreeRTOS\source\include\FreeRTOS.h"/>
+         <include file="..\..\..\FreeRTOS\source\include\task.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\inc\stm32f10x_usart.h" lastModified="1466a9086c1">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\cmsis_boot\startup\startup_stm32f10x_md.c" lastModified="1466a90867b">
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\mpu_wrappers.h" lastModified="1466a908635">
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\StackMacros.h" lastModified="1466a90862b">
+      </source>
+      <source file="..\..\..\stm_lib\src\stm32f10x_tim.c" lastModified="1466a9086c1">
+         <include file="..\..\..\stm_lib\inc\stm32f10x_tim.h"/>
+         <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\src\stm32f10x_usart.c" lastModified="1466a9086c1">
+         <include file="..\..\..\stm_lib\inc\stm32f10x_usart.h"/>
+         <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\inc\stm32f10x_flash.h" lastModified="1466a9086ad">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\src\stm32f10x_flash.c" lastModified="1466a9086c1">
+         <include file="..\..\..\stm_lib\inc\stm32f10x_flash.h"/>
+      </source>
+      <source file="..\..\..\hd44780\hd44780.h" lastModified="1466a9086ad">
+         <include file="..\..\..\hd44780\mac.h"/>
+      </source>
+      <source file="..\..\..\hd44780\hd44780.c" lastModified="1466a9086ad">
+         <include file="..\..\..\hd44780\hd44780.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\src\stm32f10x_rcc.c" lastModified="1466a9086c1">
+         <include file="..\..\..\stm_lib\inc\stm32f10x_rcc.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\event_groups.h" lastModified="1466a90862b">
+         <include file="..\..\..\FreeRTOS\source\include\timers.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\portmacro.h" lastModified="1466a90865d">
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\queue.h" lastModified="1466a908635">
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\projdefs.h" lastModified="1466a908635">
+      </source>
+      <source file="..\..\..\hd44780\mac.h" lastModified="1466a9086ad">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\inc\stm32f10x_gpio.h" lastModified="1466a9086ad">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\stm_lib\inc\stm32f10x_tim.h" lastModified="1466a9086b7">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+      </source>
+      <source file="..\..\..\clock\clock.h" lastModified="1466a908671">
+         <include file="..\..\..\cmsis_boot\stm32f10x.h"/>
+         <include file="..\..\..\stm_lib\inc\stm32f10x_gpio.h"/>
+      </source>
+      <source file="..\..\..\FreeRTOS\source\include\list.h" lastModified="1466a908635">
+      </source>
+      <source file="..\..\..\clock\clock.c" lastModified="1466a908671">
+         <include file="..\..\..\clock\clock.h"/>
       </source>
    </includePath>
 </dependencies>

@@ -1,59 +1,70 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <history>
-   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m3 -mthumb -Wall -ffunction-sections -g -O0 -c -DSTM32F103C8 -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -I..\..\..\workspace\I7_RTOS\FreeRTOS -I..\..\..\workspace\I7_RTOS\stm_lib\inc -I..\..\..\workspace\I7_RTOS -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\include -I..\..\..\workspace\I7_RTOS\cmsis -I..\..\..\workspace -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable\ARM_CM3 -I..\..\..\workspace\I7_RTOS\FreeRTOS\source -I..\..\..\workspace\I7_RTOS\hd44780 -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable -I..\..\..\workspace\I7_RTOS\clock -I..\..\.. -I..\..\..\workspace\I7_RTOS\stm_lib -I..\..\..\workspace\I7_RTOS\cmsis_boot">
-      <target file="clock.o" lastModified="1465277c62e">
-         <source file="..\..\..\clock\clock.c" lastModified="14652778b34"/>
+   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m3 -mthumb -Wall -ffunction-sections -g -O0 -c -DSTM32F103C8 -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -I..\..\..\workspace\I7_RTOS\FreeRTOS -I..\..\..\workspace\I7_RTOS\stm_lib\inc -I..\..\..\workspace\I7_RTOS -I..\..\..\workspace\I7_RTOS\common -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\include -I..\..\..\workspace\I7_RTOS\cmsis -I..\..\..\workspace -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable\ARM_CM3 -I..\..\..\workspace\I7_RTOS\FreeRTOS\source -I..\..\..\workspace\I7_RTOS\hd44780 -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable -I..\..\..\workspace\I7_RTOS\clock -I..\..\.. -I..\..\..\workspace\I7_RTOS\stm_lib -I..\..\..\workspace\I7_RTOS\cmsis_boot">
+      <target file="syscalls.o" lastModified="1466ab9bd75">
+         <source file="..\..\..\syscalls\syscalls.c" lastModified="1466ab4808b"/>
       </target>
-      <target file="tasks.o" lastModified="1465186ef6a">
-         <source file="..\..\..\FreeRTOS\source\tasks.c" lastModified="146515d8a72"/>
+   </processor>
+   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m3 -mthumb -Wall -ffunction-sections -g -O0 -c -DSTM32F103C8 -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -I..\..\..\workspace\I7_RTOS\FreeRTOS -I..\..\..\workspace\I7_RTOS\stm_lib\inc -I..\..\..\workspace\I7_RTOS\USART -I..\..\..\workspace\I7_RTOS -I..\..\..\workspace\I7_RTOS\common -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\include -I..\..\..\workspace\I7_RTOS\cmsis -I..\..\..\workspace -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable\ARM_CM3 -I..\..\..\workspace\I7_RTOS\FreeRTOS\source -I..\..\..\workspace\I7_RTOS\hd44780 -I..\..\..\workspace\I7_RTOS\FreeRTOS\source\portable -I..\..\..\workspace\I7_RTOS\clock -I..\..\.. -I..\..\..\workspace\I7_RTOS\stm_lib -I..\..\..\workspace\I7_RTOS\cmsis_boot">
+      <target file="clock.o" lastModified="1466cbbaddd">
+         <source file="..\..\..\clock\clock.c" lastModified="1466a908671"/>
       </target>
-      <target file="stm32f10x_rcc.o" lastModified="1465186edd2">
-         <source file="..\..\..\stm_lib\src\stm32f10x_rcc.c" lastModified="146515d8ab8"/>
+      <target file="common_funcs.o" lastModified="1466cbba8bd">
+         <source file="..\..\..\common\common_funcs.c" lastModified="1466aa57a3b"/>
       </target>
-      <target file="event_groups.o" lastModified="1465186f150">
-         <source file="..\..\..\FreeRTOS\source\event_groups.c" lastModified="146515d8a4a"/>
+      <target file="tasks.o" lastModified="1466fd89501">
+         <source file="..\..\..\FreeRTOS\source\tasks.c" lastModified="1466a908667"/>
       </target>
-      <target file="croutine.o" lastModified="1465186f10b">
-         <source file="..\..\..\FreeRTOS\source\croutine.c" lastModified="146515d8a4a"/>
+      <target file="stm32f10x_rcc.o" lastModified="1466cbbaa39">
+         <source file="..\..\..\stm_lib\src\stm32f10x_rcc.c" lastModified="1466a9086c1"/>
       </target>
-      <target file="heap_2.o" lastModified="1465186f176">
-         <source file="..\..\..\FreeRTOS\source\MemMang\heap_2.c" lastModified="146515d8a4a"/>
+      <target file="event_groups.o" lastModified="1466fd89603">
+         <source file="..\..\..\FreeRTOS\source\event_groups.c" lastModified="1466a90862b"/>
       </target>
-      <target file="queue.o" lastModified="1465186f0d1">
-         <source file="..\..\..\FreeRTOS\source\queue.c" lastModified="146515d8a72"/>
+      <target file="croutine.o" lastModified="1466fd895d2">
+         <source file="..\..\..\FreeRTOS\source\croutine.c" lastModified="1466a90862b"/>
       </target>
-      <target file="startup_stm32f10x_md.o" lastModified="1465186ecae">
-         <source file="..\..\..\cmsis_boot\startup\startup_stm32f10x_md.c" lastModified="146515d8a86"/>
+      <target file="heap_2.o" lastModified="1466fd89635">
+         <source file="..\..\..\FreeRTOS\source\MemMang\heap_2.c" lastModified="1466a90862b"/>
       </target>
-      <target file="stm32f10x_flash.o" lastModified="1465186f03f">
-         <source file="..\..\..\stm_lib\src\stm32f10x_flash.c" lastModified="146515d8ab8"/>
+      <target file="queue.o" lastModified="1466fd89596">
+         <source file="..\..\..\FreeRTOS\source\queue.c" lastModified="1466a908667"/>
       </target>
-      <target file="list.o" lastModified="1465186efe8">
-         <source file="..\..\..\FreeRTOS\source\list.c" lastModified="146515d8a68"/>
+      <target file="startup_stm32f10x_md.o" lastModified="1466cbba90d">
+         <source file="..\..\..\cmsis_boot\startup\startup_stm32f10x_md.c" lastModified="1466a90867b"/>
       </target>
-      <target file="port.o" lastModified="1465186f083">
-         <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\port.c" lastModified="146515d8a72"/>
+      <target file="stm32f10x_flash.o" lastModified="1466cbbac60">
+         <source file="..\..\..\stm_lib\src\stm32f10x_flash.c" lastModified="1466a9086c1"/>
       </target>
-      <target file="stm32f10x_gpio.o" lastModified="1465186ecfc">
-         <source file="..\..\..\stm_lib\src\stm32f10x_gpio.c" lastModified="146515d8ab8"/>
+      <target file="list.o" lastModified="1466fd89529">
+         <source file="..\..\..\FreeRTOS\source\list.c" lastModified="1466a908635"/>
       </target>
-      <target file="timers.o" lastModified="1465186ed5d">
-         <source file="..\..\..\FreeRTOS\source\timers.c" lastModified="146515d8a72"/>
+      <target file="port.o" lastModified="1466fd89551">
+         <source file="..\..\..\FreeRTOS\source\portable\ARM_CM3\port.c" lastModified="1466a90865d"/>
       </target>
-      <target file="system_stm32f10x.o" lastModified="1465186ec87">
-         <source file="..\..\..\cmsis_boot\system_stm32f10x.c" lastModified="146515d8a9a"/>
+      <target file="stm32f10x_gpio.o" lastModified="1466cbba971">
+         <source file="..\..\..\stm_lib\src\stm32f10x_gpio.c" lastModified="1466a9086c1"/>
       </target>
-      <target file="stm32f10x_tim.o" lastModified="1465186ec57">
-         <source file="..\..\..\stm_lib\src\stm32f10x_tim.c" lastModified="146515d8ac2"/>
+      <target file="timers.o" lastModified="1466fd89494">
+         <source file="..\..\..\FreeRTOS\source\timers.c" lastModified="1466a908667"/>
       </target>
-      <target file="hd44780.o" lastModified="1465186eed8">
-         <source file="..\..\..\hd44780\hd44780.c" lastModified="146515d8aa4"/>
+      <target file="system_stm32f10x.o" lastModified="1466cbba8ef">
+         <source file="..\..\..\cmsis_boot\system_stm32f10x.c" lastModified="1466a9086ad"/>
       </target>
-      <target file="main.o" lastModified="1466884162e">
-         <source file="..\..\..\main.c" lastModified="14668840bb2"/>
+      <target file="stm32f10x_tim.o" lastModified="1466cbba88b">
+         <source file="..\..\..\stm_lib\src\stm32f10x_tim.c" lastModified="1466a9086c1"/>
       </target>
-      <target file="stm32f10x_usart.o" lastModified="1465186efc1">
-         <source file="..\..\..\stm_lib\src\stm32f10x_usart.c" lastModified="146515d8ac2"/>
+      <target file="hd44780.o" lastModified="1466cbbaad9">
+         <source file="..\..\..\hd44780\hd44780.c" lastModified="1466a9086ad"/>
+      </target>
+      <target file="usart.o" lastModified="14671dbf9a2">
+         <source file="..\..\..\USART\usart.c" lastModified="14671dbf17f"/>
+      </target>
+      <target file="main.o" lastModified="14671dbf93e">
+         <source file="..\..\..\main.c" lastModified="14671dba6aa"/>
+      </target>
+      <target file="stm32f10x_usart.o" lastModified="1466cbbabde">
+         <source file="..\..\..\stm_lib\src\stm32f10x_usart.c" lastModified="1466a9086c1"/>
       </target>
    </processor>
 </history>
