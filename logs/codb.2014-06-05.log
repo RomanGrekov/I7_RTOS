@@ -1,0 +1,181 @@
+09:16:42.026 [Worker-28] INFO  org.coocox.codb.common.log.ErrorLog - [C:/CooCox/CoIDE/bin\fossil.exe,clone,-A,admin,http://admin:17a2f3@data.coocox.org:9090/cgi-bin/repo/1e39121f-c99f-4c33-8cda-004145cf6e9c,C:/CooCox/CoIDE/repo\.rn\fossils\1e39121f-c99f-4c33-8cda-004145cf6e9c.fossil] executed OK 
+Bytes      Cards  Artifacts     Deltas
+Sent:              53          1          0          0
+waiting for server...
+processed: 3%         
+processed: 13%         
+processed: 17%         
+processed: 56%         
+processed: 60%         
+processed: 63%         
+processed: 66%         
+processed: 70%         
+processed: 73%         
+processed: 91%         
+processed: 92%         
+processed: 97%         
+Received:        1548         13          5          0
+Sent:              58          2          0          0
+waiting for server...
+processed: 3%         
+Received:         634          2          0          0
+Total network traffic: 643 bytes sent, 2388 bytes received
+Rebuilding repository meta-data...
+  0.0% complete...
+  20.0% complete...
+  40.0% complete...
+  60.0% complete...
+  80.0% complete...
+  100.0% complete...
+project-id: 3f36b1a59385b77aa6ce0f6f925f778c8c5c8f1d
+server-id:  3b09b55097ec324c22698b062280d591d6794936
+admin-user: admin (password is "69f31a")
+
+09:16:42.026 [Worker-50] ERROR org.coocox.codb.common.log.ErrorLog - [clone user pass] executed Error 
+C:\CooCox\CoIDE\bin\fossil.exe: SQLITE_ERROR: table blob already exists
+C:\CooCox\CoIDE\bin\fossil.exe: table blob already exists
+If you have recently updated your fossil executable, you might
+need to run "fossil all rebuild" to bring the repository
+schemas up to date.
+
+09:16:42.036 [Worker-50] ERROR org.coocox.codb.common.log.ErrorLog - freshExamplesByCompId API failed 
+clone from server errored
+org.coocox.codb.common.fossil.Fossil.cloneFromServer(Fossil.java:89)
+org.coocox.codb.client.core.service.RepoService.clone(RepoService.java:79)
+org.coocox.codb.client.core.api.impl.ExampleApiImpl.freshExamplesByCompId(ExampleApiImpl.java:272)
+org.coocox.example.core.impl.ExampleDBCmdHandler.freshExamplesByCompId(ExampleDBCmdHandler.java:51)
+org.coocox.integrate.component.views.ComponentView$4$1.run(ComponentView.java:346)
+org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+
+09:16:42.177 [Worker-28] INFO  org.coocox.codb.common.log.ErrorLog - [C:/CooCox/CoIDE/bin\fossil.exe,open,C:/CooCox/CoIDE/repo\.rn\fossils\1e39121f-c99f-4c33-8cda-004145cf6e9c.fossil,-latest] executed OK 
+doc/description.html
+doc/docInfo.dat
+src/main.c
+project-name: <unnamed>
+repository:   C:/CooCox/CoIDE/repo\.rn\fossils\1e39121f-c99f-4c33-8cda-004145cf6e9c.fossil
+local-root:   C:/CooCox/CoIDE/repo/Examples/1161_simple example/
+user-home:    C:/Documents and Settings/testuser/Application Data
+project-code: 3f36b1a59385b77aa6ce0f6f925f778c8c5c8f1d
+checkout:     bf2f3746b20d29599109adaee4ee2e7fcdac1384 2014-02-03 13:07:37 UTC
+parent:       4e495d91a75a039b15334aea4ab852455f999f4a 2014-02-03 13:07:28 UTC
+tags:         trunk
+comment:      commit the example sourceCode (user: admin)
+
+09:16:42.177 [Worker-28] INFO  org.coocox.codb.common.log.ErrorLog - [C:/CooCox/CoIDE/bin\fossil.exe,close,-force] executed OK 
+
+
+09:16:44.600 [Worker-28] INFO  org.coocox.codb.common.log.ErrorLog - [C:/CooCox/CoIDE/bin\fossil.exe,clone,-A,admin,http://admin:ebcf37@data.coocox.org:9090/cgi-bin/repo/d03399bf-20c3-4432-a157-4e1ce9c4f7da,C:/CooCox/CoIDE/repo\.rn\fossils\d03399bf-20c3-4432-a157-4e1ce9c4f7da.fossil] executed OK 
+Bytes      Cards  Artifacts     Deltas
+Sent:              53          1          0          0
+waiting for server...
+processed: 0%         
+processed: 1%         
+processed: 2%         
+processed: 4%         
+processed: 9%         
+processed: 13%         
+processed: 15%         
+processed: 16%         
+processed: 20%         
+processed: 24%         
+processed: 26%         
+processed: 29%         
+processed: 30%         
+processed: 34%         
+processed: 37%         
+processed: 38%         
+processed: 39%         
+processed: 47%         
+processed: 53%         
+processed: 61%         
+processed: 73%         
+processed: 75%         
+processed: 76%         
+processed: 78%         
+processed: 79%         
+processed: 83%         
+processed: 85%         
+processed: 86%         
+processed: 88%         
+processed: 90%         
+processed: 91%         
+processed: 94%         
+processed: 97%         
+processed: 98%         
+processed: 99%         
+Received:       44152         79         38          0
+Sent:              58          2          0          0
+waiting for server...
+processed: 3%         
+Received:         634          2          0          0
+Total network traffic: 645 bytes sent, 44993 bytes received
+Rebuilding repository meta-data...
+  0.0% complete...
+  2.6% complete...
+  5.2% complete...
+  7.8% complete...
+  10.5% complete...
+  13.1% complete...
+  15.7% complete...
+  18.4% complete...
+  21.0% complete...
+  23.6% complete...
+  26.3% complete...
+  28.9% complete...
+  31.5% complete...
+  34.2% complete...
+  36.8% complete...
+  39.4% complete...
+  42.1% complete...
+  44.7% complete...
+  47.3% complete...
+  50.0% complete...
+  52.6% complete...
+  55.2% complete...
+  57.8% complete...
+  60.5% complete...
+  63.1% complete...
+  65.7% complete...
+  68.4% complete...
+  71.0% complete...
+  73.6% complete...
+  76.3% complete...
+  78.9% complete...
+  81.5% complete...
+  84.2% complete...
+  86.8% complete...
+  89.4% complete...
+  92.1% complete...
+  94.7% complete...
+  97.3% complete...
+  100.0% complete...
+project-id: c7004395d7b30e2f260659c1af41c4f6a249b2db
+server-id:  a5751ad3de6a0813dea00651d7a00f0dc52014e2
+admin-user: admin (password is "393f78")
+
+09:16:45.732 [Worker-28] INFO  org.coocox.codb.common.log.ErrorLog - [C:/CooCox/CoIDE/bin\fossil.exe,open,C:/CooCox/CoIDE/repo\.rn\fossils\d03399bf-20c3-4432-a157-4e1ce9c4f7da.fossil,-latest] executed OK 
+doc/description.html
+doc/docInfo.dat
+src/KS0108/ks0108.elf
+src/example/KS0108-STM32.c
+src/example/KS0108.c
+src/example/KS0108.h
+src/example/font5x8.h
+src/example/graphic.c
+src/example/graphic.h
+src/example/main.c
+project-name: <unnamed>
+repository:   C:/CooCox/CoIDE/repo\.rn\fossils\d03399bf-20c3-4432-a157-4e1ce9c4f7da.fossil
+local-root:   C:/CooCox/CoIDE/repo/Examples/1286_stm32f100_ks0108_lcd/
+user-home:    C:/Documents and Settings/testuser/Application Data
+project-code: c7004395d7b30e2f260659c1af41c4f6a249b2db
+checkout:     8434bada9d82d9a1f80985b66e679d472663c188 2014-05-06 06:32:18 UTC
+parent:       90a335790b559e2129e6f8098941a59004f795f7 2014-05-06 06:22:12 UTC
+tags:         trunk
+comment:      commit the example sourceCode (user: admin)
+
+09:16:45.742 [Worker-28] INFO  org.coocox.codb.common.log.ErrorLog - [C:/CooCox/CoIDE/bin\fossil.exe,close,-force] executed OK 
+
+
+09:16:45.882 [Worker-28] INFO  org.coocox.codb.common.log.ProcessTimeLog - 47`444`freshExamplesByCompId`7058
