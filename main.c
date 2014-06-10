@@ -38,6 +38,7 @@ int main(void)
 
     vSemaphoreCreateBinary(xBinarySemaphore);
     if (xBinarySemaphore != NULL) {
+
         xTaskCreate(prvUsartHandler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
         		NULL, tskIDLE_PRIORITY + 2, NULL);
     }
@@ -49,9 +50,8 @@ int main(void)
             NULL, tskIDLE_PRIORITY + 1, NULL);
 
 
-
-    /* Start the scheduler. */
     vTaskStartScheduler();
+
     while(1);
 }
 
@@ -136,30 +136,31 @@ void vApplicationTickHook( void )
 }
 
 void USART1_IRQHandler(void){
-	static portBASE_TYPE xHigherPriorityTaskWoken;
+	static portBASE_TYPE xHigherPriorityTaskWoken, xStatus;
+	uint8_t a;
 	if(USART1->SR & USART_SR_RXNE){
+		a = read_byte();
+		xQueueSendFromISR(xQueueLCD, &a, xHigherPriorityTaskWoken);
 
 		xHigherPriorityTaskWoken = pdFALSE;
-		xSemaphoreGiveFromISR(xBinarySemaphore, &xHigherPriorityTaskWoken);
+		xStatus = xSemaphoreGiveFromISR(xBinarySemaphore, &xHigherPriorityTaskWoken);
+		if(xStatus == pdTRUE){
 
+		}
 		if( xHigherPriorityTaskWoken == pdTRUE ){
 			taskYIELD();
 		}
-
 	}
 }
 
 static void prvUsartHandler(void *pvParameters) {
-	uint8_t symb;
 	portBASE_TYPE xStatus;
 
 	for (;;) {
-
-		xSemaphoreTake(xBinarySemaphore, portMAX_DELAY);
 		GPIOB->ODR ^= GPIO_ODR_ODR1;
-		symb = read_byte();
-		xStatus = xQueueSendToBack(xQueueLCD, symb, 0);
-		if (xStatus != pdPASS) {
+		vTaskDelay(1000);
+		xStatus = xSemaphoreTake(xBinarySemaphore, portMAX_DELAY);
+		if(xStatus == pdTRUE){
 
 		}
 	}
