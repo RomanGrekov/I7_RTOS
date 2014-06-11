@@ -13,15 +13,20 @@
 #include "common/common_funcs.h"
 #include "USART/usart.h"
 
+#define LCD_QUEUE_SIZE 32
+
 static void prvSetupHardware( void );
 static void prvLedBlink1( void *pvParameters );
 static void prvLcdShow( void *pvParameters );
-static void prvPutSymb( void *pvParameters );
+static void prvShowTechInfo( void *pvParameters );
 static void prvInitall( void *pvParameters );
 static void prvUsartHandler(void *pvParameters);
 void vApplicationTickHook( void );
 
+portBASE_TYPE put_to_lcd_queue(uint8_t *p);
+
 xQueueHandle xQueueLCD;
+xQueueHandle xQueueUsartRx;
 xSemaphoreHandle xBinarySemaphore;
 
 int main(void)
@@ -32,8 +37,11 @@ int main(void)
 	InitUSART(9600, 108000000);
 	usart_interrupt_init();
 
-    xQueueLCD = xQueueCreate(32, sizeof(unsigned char));
+    xQueueLCD = xQueueCreate(LCD_QUEUE_SIZE, sizeof(unsigned char));
     if (xQueueLCD != NULL) {
+    }
+    xQueueUsartRx = xQueueCreate(32, sizeof(unsigned char));
+    if (xQueueUsartRx != NULL) {
     }
 
     vSemaphoreCreateBinary(xBinarySemaphore);
@@ -98,33 +106,49 @@ void prvLcdShow( void *pvParameters )
     }
 }
 
-void prvPutSymb( void *pvParameters ){
+void prvShowTechInfo( void *pvParameters ){
 	unsigned char symb[32];
-	unsigned char *ps;
 	portBASE_TYPE xStatus;
 
-	strncpy(symb, "Hello world!!!                 \0", 32);
-	ps = &symb;
-	while(*ps){
-		xStatus = xQueueSendToBack(xQueueLCD, ps, 0);
-		if (xStatus != pdPASS) {
+	strncpy(symb, "Free heap: ", 11);
+	itoa(xPortGetFreeHeapSize(), 10, symb+11);
+	put_to_lcd_queue(symb);
 
-		}
-		else{
-			ps++;
-		}
-	}
 	vTaskDelete(NULL);
+}
+
+portBASE_TYPE put_to_lcd_queue(uint8_t *p){
+	portBASE_TYPE xStatus;
+	uint8_t i=0, a=' ';
+
+	while(*p){
+		xStatus = xQueueSendToBack(xQueueLCD, p, 10);
+		p++;
+		if (xStatus == pdPASS) {
+			i++;
+		}
+		else return xStatus;
+	}
+	while(i < LCD_QUEUE_SIZE){
+		xStatus = xQueueSendToBack(xQueueLCD, &a, 10);
+		if (xStatus == pdPASS) {
+			i++;
+		}
+		else return xStatus;
+	}
+	return pdPASS;
 }
 
 void prvInitall( void *pvParameters )
 {
+	uint8_t s[7];
+
 	lcd_init();
 
     xTaskCreate(prvLcdShow,(signed char*)"LcdShow",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 
-    xTaskCreate(prvPutSymb,(signed char*)"PutSymb",configMINIMAL_STACK_SIZE,
+    xTaskCreate(prvShowTechInfo,(signed char*)"TechInfo",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 
     vTaskDelete(NULL);
@@ -139,13 +163,11 @@ void USART1_IRQHandler(void){
 	static portBASE_TYPE xHigherPriorityTaskWoken, xStatus;
 	uint8_t a;
 	if(USART1->SR & USART_SR_RXNE){
-		a = read_byte();
-		xQueueSendFromISR(xQueueLCD, &a, xHigherPriorityTaskWoken);
-
 		xHigherPriorityTaskWoken = pdFALSE;
-		xStatus = xSemaphoreGiveFromISR(xBinarySemaphore, &xHigherPriorityTaskWoken);
+		a = read_byte();
+		xQueueSendFromISR(xQueueUsartRx, &a, xHigherPriorityTaskWoken);
 		if(xStatus == pdTRUE){
-
+			GPIOB->ODR ^= GPIO_ODR_ODR1;
 		}
 		if( xHigherPriorityTaskWoken == pdTRUE ){
 			taskYIELD();
@@ -155,13 +177,11 @@ void USART1_IRQHandler(void){
 
 static void prvUsartHandler(void *pvParameters) {
 	portBASE_TYPE xStatus;
-
+	uint8_t a;
 	for (;;) {
-		GPIOB->ODR ^= GPIO_ODR_ODR1;
-		vTaskDelay(1000);
-		xStatus = xSemaphoreTake(xBinarySemaphore, portMAX_DELAY);
-		if(xStatus == pdTRUE){
-
+		xStatus = xQueueReceive(xQueueUsartRx, &a, portMAX_DELAY);
+		if (xStatus == pdPASS){
+			xQueueSendToBack(xQueueLCD, &a, 100);
 		}
 	}
 }
