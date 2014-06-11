@@ -36,6 +36,7 @@ Contact information :
 #define HD44780_H
 
 #include "mac.h"
+#include "globs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -133,6 +134,8 @@ void lcd_putcc(uint8_t sym);
 void LCDPrintS(uint8_t *p);
 void LCDLine(uint8_t line);
 uint8_t GetSymb(uint8_t digit);
+
+portBASE_TYPE put_to_lcd_queue(uint8_t *p);
 //-------------------------------
 // PROGRESS BAR API
 //-------------------------------

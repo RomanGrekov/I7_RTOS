@@ -492,6 +492,29 @@ void shift_display(uint8_t direction)
 		lcd_cmd(0x18);
 	};
 }
+
+portBASE_TYPE put_to_lcd_queue(uint8_t *p){
+	portBASE_TYPE xStatus;
+	uint8_t i=0, a=' ';
+
+	while(*p){
+		xStatus = xQueueSendToBack(xQueueLCD, p, 10);
+		p++;
+		if (xStatus == pdPASS) {
+			i++;
+		}
+		else return xStatus;
+	}
+	while(i < LCD_QUEUE_SIZE){
+		xStatus = xQueueSendToBack(xQueueLCD, &a, 10);
+		if (xStatus == pdPASS) {
+			i++;
+		}
+		else return xStatus;
+	}
+	return pdPASS;
+}
+
 //-------------------------------
 /* END OF FILE */
 //-------------------------------

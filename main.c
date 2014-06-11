@@ -12,58 +12,29 @@
 #include "clock/clock.h"
 #include "common/common_funcs.h"
 #include "USART/usart.h"
+#include "globs.h"
 
-#define LCD_QUEUE_SIZE 32
-
-static void prvSetupHardware( void );
+static void SetupHardware( void );
 static void prvLedBlink1( void *pvParameters );
 static void prvLcdShow( void *pvParameters );
 static void prvShowTechInfo( void *pvParameters );
 static void prvInitall( void *pvParameters );
 static void prvUsartHandler(void *pvParameters);
+static void prvUsart2Transmitter (void *pvParameters);
+void USART2QueueSendString(uint8_t *data);
 void vApplicationTickHook( void );
-
-portBASE_TYPE put_to_lcd_queue(uint8_t *p);
-
-xQueueHandle xQueueLCD;
-xQueueHandle xQueueUsartRx;
-xSemaphoreHandle xBinarySemaphore;
 
 int main(void)
 {
-	InitRCC();
-	init_bad_clock_inter();
-    prvSetupHardware();
-	InitUSART(9600, 108000000);
-	usart_interrupt_init();
-
-    xQueueLCD = xQueueCreate(LCD_QUEUE_SIZE, sizeof(unsigned char));
-    if (xQueueLCD != NULL) {
-    }
-    xQueueUsartRx = xQueueCreate(32, sizeof(unsigned char));
-    if (xQueueUsartRx != NULL) {
-    }
-
-    vSemaphoreCreateBinary(xBinarySemaphore);
-    if (xBinarySemaphore != NULL) {
-
-        xTaskCreate(prvUsartHandler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
-        		NULL, tskIDLE_PRIORITY + 2, NULL);
-    }
-
     xTaskCreate(prvInitall,(signed char*)"Initall",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
-
-    xTaskCreate(prvLedBlink1,(signed char*)"LED1",configMINIMAL_STACK_SIZE,
-            NULL, tskIDLE_PRIORITY + 1, NULL);
-
 
     vTaskStartScheduler();
 
     while(1);
 }
 
-void prvSetupHardware()
+void SetupHardware()
 {
     GPIO_InitTypeDef  GPIO_InitStructure;
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
@@ -117,72 +88,85 @@ void prvShowTechInfo( void *pvParameters ){
 	vTaskDelete(NULL);
 }
 
-portBASE_TYPE put_to_lcd_queue(uint8_t *p){
-	portBASE_TYPE xStatus;
-	uint8_t i=0, a=' ';
-
-	while(*p){
-		xStatus = xQueueSendToBack(xQueueLCD, p, 10);
-		p++;
-		if (xStatus == pdPASS) {
-			i++;
-		}
-		else return xStatus;
-	}
-	while(i < LCD_QUEUE_SIZE){
-		xStatus = xQueueSendToBack(xQueueLCD, &a, 10);
-		if (xStatus == pdPASS) {
-			i++;
-		}
-		else return xStatus;
-	}
-	return pdPASS;
-}
 
 void prvInitall( void *pvParameters )
 {
-	uint8_t s[7];
-
+	//InitRCC();
+	//init_bad_clock_inter();
+    SetupHardware();
+	USART1Init(9600, 108000000);
+	USART1InterrInit();
+	USART2Init(9600, 108000000);
+	//USART2InterrInit();
 	lcd_init();
 
+	xQueueUsart2Tx = xQueueCreate(USART2_TX_QUEUE_SIZE, sizeof(unsigned char));
+	if (xQueueUsart2Tx != NULL) {
+	}
+	xTaskCreate(prvUsart2Transmitter,(signed char*)"USART2_transmitter",configMINIMAL_STACK_SIZE,
+	        	NULL, tskIDLE_PRIORITY + 1, NULL);
+
+	xQueueLCD = xQueueCreate(LCD_QUEUE_SIZE, sizeof(unsigned char));
+	if (xQueueLCD != NULL) {
+	}
+	xQueueUsart1Rx = xQueueCreate(USART1_RX_QUEUE_SIZE, sizeof(unsigned char));
+	if (xQueueUsart1Rx != NULL) {
+	}
+
+	xTaskCreate(prvUsartHandler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
+	        	NULL, tskIDLE_PRIORITY + 1, NULL);
+
+
+	xTaskCreate(prvLedBlink1,(signed char*)"LED1",configMINIMAL_STACK_SIZE,
+	            NULL, tskIDLE_PRIORITY + 1, NULL);
+
     xTaskCreate(prvLcdShow,(signed char*)"LcdShow",configMINIMAL_STACK_SIZE,
-            NULL, tskIDLE_PRIORITY + 1, NULL);
+            	NULL, tskIDLE_PRIORITY + 1, NULL);
 
     xTaskCreate(prvShowTechInfo,(signed char*)"TechInfo",configMINIMAL_STACK_SIZE,
-            NULL, tskIDLE_PRIORITY + 1, NULL);
+            	NULL, tskIDLE_PRIORITY + 1, NULL);
 
+
+	//USART2QueueSendString("Test USART 2");
+    USART2WriteByte('a');
     vTaskDelete(NULL);
 }
 
-void vApplicationTickHook( void )
-{
-	unsigned char a=0;
-}
-
-void USART1_IRQHandler(void){
-	static portBASE_TYPE xHigherPriorityTaskWoken, xStatus;
-	uint8_t a;
-	if(USART1->SR & USART_SR_RXNE){
-		xHigherPriorityTaskWoken = pdFALSE;
-		a = read_byte();
-		xQueueSendFromISR(xQueueUsartRx, &a, xHigherPriorityTaskWoken);
-		if(xStatus == pdTRUE){
-			GPIOB->ODR ^= GPIO_ODR_ODR1;
-		}
-		if( xHigherPriorityTaskWoken == pdTRUE ){
-			taskYIELD();
-		}
-	}
-}
 
 static void prvUsartHandler(void *pvParameters) {
 	portBASE_TYPE xStatus;
 	uint8_t a;
 	for (;;) {
-		xStatus = xQueueReceive(xQueueUsartRx, &a, portMAX_DELAY);
+		xStatus = xQueueReceive(xQueueUsart1Rx, &a, portMAX_DELAY);
 		if (xStatus == pdPASS){
 			xQueueSendToBack(xQueueLCD, &a, 100);
 		}
 	}
 }
 
+void USART2QueueSendString(uint8_t *data){
+	portBASE_TYPE xStatus;
+
+	while(*data){
+		xStatus = xQueueSend(xQueueUsart2Tx, data, 100);
+		if (xStatus == pdPASS){
+			data++;
+		}
+	}
+}
+
+static void prvUsart2Transmitter(void *pvParameters) {
+	portBASE_TYPE xStatus;
+	uint8_t a;
+	for (;;) {
+		xStatus = xQueueReceive(xQueueUsart2Tx, &a, portMAX_DELAY);
+		if (xStatus == pdPASS){
+			USART2WriteByte(a);
+		}
+	}
+}
+
+void vApplicationTickHook( void )
+{
+	unsigned char a=0;
+}
