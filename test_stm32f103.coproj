@@ -33,7 +33,7 @@
           <Memory name="IROM2" type="ReadOnly" size="" startValue=""/>
           <Memory name="IRAM2" type="ReadWrite" size="" startValue=""/>
         </MemoryAreas>
-        <LocateLinkFile path="../../configuration/programdata/freertos_stm32f103/link.ld" type="0"/>
+        <LocateLinkFile path="../../configuration/programdata/freertos_stm32f103/arm-gcc-link.ld" type="0"/>
       </Link>
       <Output>
         <Option name="OutputFileType" value="0"/>
@@ -81,8 +81,8 @@
     <File name="globs.h" path="globs.h" type="1"/>
     <File name="FreeRTOS/source/include/timers.h" path="FreeRTOS/source/include/timers.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_tim.h" path="stm_lib/inc/stm32f10x_tim.h" type="1"/>
-    <File name="cmsis_boot" path="" type="2"/>
     <File name="USART/usart.c" path="USART/usart.c" type="1"/>
+    <File name="cmsis_boot" path="" type="2"/>
     <File name="FreeRTOS/source/include/mpu_wrappers.h" path="FreeRTOS/source/include/mpu_wrappers.h" type="1"/>
     <File name="stm_lib/src/stm32f10x_tim.c" path="stm_lib/src/stm32f10x_tim.c" type="1"/>
     <File name="USART" path="" type="2"/>
@@ -104,22 +104,22 @@
     <File name="stm_lib/inc/stm32f10x_gpio.h" path="stm_lib/inc/stm32f10x_gpio.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_usart.h" path="stm_lib/inc/stm32f10x_usart.h" type="1"/>
     <File name="hd44780" path="" type="2"/>
-    <File name="cmsis_boot/system_stm32f10x.c" path="cmsis_boot/system_stm32f10x.c" type="1"/>
     <File name="hd44780/hd44780.c" path="hd44780/hd44780.c" type="1"/>
+    <File name="cmsis_boot/system_stm32f10x.c" path="cmsis_boot/system_stm32f10x.c" type="1"/>
     <File name="hd44780/mac.h" path="hd44780/mac.h" type="1"/>
     <File name="cmsis/core_cmInstr.h" path="cmsis/core_cmInstr.h" type="1"/>
     <File name="FreeRTOS/source/list.c" path="FreeRTOS/source/list.c" type="1"/>
     <File name="FreeRTOS/source/include" path="" type="2"/>
     <File name="FreeRTOS/source/include/event_groups.h" path="FreeRTOS/source/include/event_groups.h" type="1"/>
     <File name="cmsis/core_cm3.h" path="cmsis/core_cm3.h" type="1"/>
-    <File name="FreeRTOS/source/include/stdint.readme" path="FreeRTOS/source/include/stdint.readme" type="1"/>
     <File name="FreeRTOS/source/include/StackMacros.h" path="FreeRTOS/source/include/StackMacros.h" type="1"/>
+    <File name="FreeRTOS/source/include/stdint.readme" path="FreeRTOS/source/include/stdint.readme" type="1"/>
     <File name="stm_lib/src/stm32f10x_rcc.c" path="stm_lib/src/stm32f10x_rcc.c" type="1"/>
     <File name="common" path="" type="2"/>
     <File name="FreeRTOS/source/include/portable.h" path="FreeRTOS/source/include/portable.h" type="1"/>
     <File name="FreeRTOS/source/portable/ARM_CM3/portmacro.h" path="FreeRTOS/source/portable/ARM_CM3/portmacro.h" type="1"/>
-    <File name="common/common_funcs.h" path="common/common_funcs.h" type="1"/>
     <File name="USART/usart.h" path="USART/usart.h" type="1"/>
+    <File name="common/common_funcs.h" path="common/common_funcs.h" type="1"/>
     <File name="FreeRTOS/source/croutine.c" path="FreeRTOS/source/croutine.c" type="1"/>
     <File name="clock/clock.h" path="clock/clock.h" type="1"/>
     <File name="stm_lib/src" path="" type="2"/>
@@ -129,10 +129,10 @@
     <File name="FreeRTOS/source/include/list.h" path="FreeRTOS/source/include/list.h" type="1"/>
     <File name="FreeRTOS/source" path="" type="2"/>
     <File name="stm_lib/src/stm32f10x_flash.c" path="stm_lib/src/stm32f10x_flash.c" type="1"/>
-    <File name="hd44780/hd44780.h" path="hd44780/hd44780.h" type="1"/>
+    <File name="FreeRTOS/source/readme.txt" path="FreeRTOS/source/readme.txt" type="1"/>
     <File name="cmsis_boot/system_stm32f10x.h" path="cmsis_boot/system_stm32f10x.h" type="1"/>
     <File name="FreeRTOS/source/portable" path="" type="2"/>
-    <File name="FreeRTOS/source/readme.txt" path="FreeRTOS/source/readme.txt" type="1"/>
+    <File name="hd44780/hd44780.h" path="hd44780/hd44780.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_rcc.h" path="stm_lib/inc/stm32f10x_rcc.h" type="1"/>
     <File name="syscalls" path="" type="2"/>
     <File name="common/common_funcs.c" path="common/common_funcs.c" type="1"/>
@@ -140,13 +140,14 @@
     <File name="FreeRTOS/source/MemMang" path="" type="2"/>
     <File name="clock/clock.c" path="clock/clock.c" type="1"/>
     <File name="FreeRTOS/source/portable/ARM_CM3" path="" type="2"/>
+    <File name="globs.c" path="globs.c" type="1"/>
     <File name="FreeRTOS/source/tasks.c" path="FreeRTOS/source/tasks.c" type="1"/>
     <File name="FreeRTOS" path="" type="2"/>
     <File name="stm_lib/inc" path="" type="2"/>
     <File name="FreeRTOSConfig.h" path="FreeRTOSConfig.h" type="1"/>
     <File name="FreeRTOS/source/include/task.h" path="FreeRTOS/source/include/task.h" type="1"/>
-    <File name="main.c" path="main.c" type="1"/>
     <File name="FreeRTOS/source/timers.c" path="FreeRTOS/source/timers.c" type="1"/>
+    <File name="main.c" path="main.c" type="1"/>
     <File name="FreeRTOS/source/include/croutine.h" path="FreeRTOS/source/include/croutine.h" type="1"/>
   </Files>
 </Project>

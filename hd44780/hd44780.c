@@ -33,6 +33,7 @@ Contact information :
 */
 
 #include "hd44780.h"
+#include "FreeRTOS.h"
 
 volatile uint8_t lcd_cnt=0;
 
@@ -89,6 +90,20 @@ static void DELAY(volatile int32u_t us)
 	vTaskDelay(us);
 }
 
+static void DELAY_native(volatile int32u_t us)
+{
+
+ volatile int32u_t n, alfa, i;
+ n = us * (configCPU_CLOCK_HZ / 1000000);
+ i=0;
+
+ for(alfa=0;alfa<n;alfa++)
+ {
+	 i++;
+ }
+
+}
+
 //-------------------------------
 /* INITIATE TRANSFER OF DATA/COMMAND TO LCD */
 //-------------------------------
@@ -98,6 +113,14 @@ static void LCD_STROBE(uint32_t us)
  DELAY(us);
  DISABLE(LCD_WIRE,E); // Enter
  DELAY(us);
+}
+
+static void LCD_STROBE_native(uint32_t us)
+{
+ ENABLE(LCD_WIRE,E);
+ DELAY_native(us);
+ DISABLE(LCD_WIRE,E); // Enter
+ DELAY_native(us);
 }
 
 //-------------------------------
@@ -133,6 +156,13 @@ void lcd_cmd(int8u_t data)
  LCD_STROBE(20); // busy delay
 }
 
+void lcd_cmd_native(int8u_t data)
+{/* LCD ELEMENTARY COMMAND */
+ HIGHBITS(data);
+ LCD_STROBE_native(20);
+ LOWBITS(data);
+ LCD_STROBE_native(20); // busy delay
+}
 
 //-------------------------------
 /* LCD CLEAR SCREEN */
@@ -413,10 +443,10 @@ void lcd_clearbar(void)
 void lcd_config(int8u_t param)
 {/* CONFIGURE THE DISPLAY */
  HIGHBITS(param); // 4-bit, two lines, 5x8 pixel
-  LCD_STROBE(9); // change 8-bit interface to 4-bit interface
-  LCD_STROBE(9); // init 4-bit interface
+  LCD_STROBE_native(9); // change 8-bit interface to 4-bit interface
+  LCD_STROBE_native(9); // init 4-bit interface
  LOWBITS(param);
-  LCD_STROBE(40);
+  LCD_STROBE_native(40);
 }
 
 //-------------------------------
@@ -424,19 +454,19 @@ void lcd_config(int8u_t param)
 //-------------------------------
 void lcd_init(void)
 {
- DELAY(15000);
+ DELAY_native(15000);
  gpio_init();
- lcd_cmd(0x30); // 1, return home cursor
- lcd_cmd(0x30); // 1, return home cursor
- lcd_cmd(0x30); // 1, return home cursor
- lcd_cmd(0x30); // 1, return home cursor
- lcd_cmd(0x30); // 1, return home cursor
+ lcd_cmd_native(0x30); // 1, return home cursor
+ lcd_cmd_native(0x30); // 1, return home cursor
+ lcd_cmd_native(0x30); // 1, return home cursor
+ lcd_cmd_native(0x30); // 1, return home cursor
+ lcd_cmd_native(0x30); // 1, return home cursor
 
  lcd_config(DEFAULT_DISPLAY_CONFIG); // 1, Data Lenght, Number of lines, character font
- lcd_cmd(DEFAULT_DISPLAY_CONTROL); // 1, lcd, cursor, blink
- lcd_cmd(DEFAULT_ENTRY_MODE); // 1,increment/decrement,display shift on/off
- lcd_cmd(0x01); // clear display
- lcd_cmd(0x02); // 1, return home cursor
+ lcd_cmd_native(DEFAULT_DISPLAY_CONTROL); // 1, lcd, cursor, blink
+ lcd_cmd_native(DEFAULT_ENTRY_MODE); // 1,increment/decrement,display shift on/off
+ lcd_cmd_native(0x01); // clear display
+ lcd_cmd_native(0x02); // 1, return home cursor
 #if (USE_PROGRESS_BAR)
  lcd_readybar();
 #endif

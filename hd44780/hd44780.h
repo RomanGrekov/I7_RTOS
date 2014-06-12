@@ -136,6 +136,9 @@ void LCDLine(uint8_t line);
 uint8_t GetSymb(uint8_t digit);
 
 portBASE_TYPE put_to_lcd_queue(uint8_t *p);
+static void DELAY_native(volatile int32u_t us);
+static void LCD_STROBE_native(uint32_t us);
+void lcd_cmd_native(int8u_t data);
 //-------------------------------
 // PROGRESS BAR API
 //-------------------------------

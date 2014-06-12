@@ -22,10 +22,20 @@ static void prvInitall( void *pvParameters );
 static void prvUsartHandler(void *pvParameters);
 static void prvUsart2Transmitter (void *pvParameters);
 void USART2QueueSendString(uint8_t *data);
+
 void vApplicationTickHook( void );
 
 int main(void)
 {
+	InitRCC();
+	init_bad_clock_inter();
+    SetupHardware();
+	USART1Init(9600, configCPU_CLOCK_HZ);
+	USART1InterrInit();
+	USART2Init(9600, configCPU_CLOCK_HZ/2);
+	//USART2InterrInit();
+	lcd_init();
+
     xTaskCreate(prvInitall,(signed char*)"Initall",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 
@@ -91,44 +101,61 @@ void prvShowTechInfo( void *pvParameters ){
 
 void prvInitall( void *pvParameters )
 {
-	//InitRCC();
-	//init_bad_clock_inter();
-    SetupHardware();
-	USART1Init(9600, 108000000);
-	USART1InterrInit();
-	USART2Init(9600, 108000000);
-	//USART2InterrInit();
-	lcd_init();
+	portBASE_TYPE xStatus;
+	uint8_t results=0;
 
 	xQueueUsart2Tx = xQueueCreate(USART2_TX_QUEUE_SIZE, sizeof(unsigned char));
-	if (xQueueUsart2Tx != NULL) {
-	}
-	xTaskCreate(prvUsart2Transmitter,(signed char*)"USART2_transmitter",configMINIMAL_STACK_SIZE,
+	if (xQueueUsart2Tx != NULL) results++;
+
+	xStatus = xTaskCreate(prvUsart2Transmitter,(signed char*)"USART2_transmitter",configMINIMAL_STACK_SIZE,
 	        	NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Queue - Usart 2 TX created\n");
+		log("Task - Usart 2 sender created\n");
+		results++;
+	}
 
 	xQueueLCD = xQueueCreate(LCD_QUEUE_SIZE, sizeof(unsigned char));
-	if (xQueueLCD != NULL) {
+	if (xQueueLCD != NULL){
+		log("Queue - Lcd created\n");
+		results++;
 	}
+
 	xQueueUsart1Rx = xQueueCreate(USART1_RX_QUEUE_SIZE, sizeof(unsigned char));
 	if (xQueueUsart1Rx != NULL) {
+		log("Queue - USART 1 RX created\n");
+		results++;
 	}
 
-	xTaskCreate(prvUsartHandler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
-	        	NULL, tskIDLE_PRIORITY + 1, NULL);
+	xStatus = xTaskCreate(prvUsartHandler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
+	        NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Task - Usart 1 receiver to Lcd created\n");
+		results++;
+	}
 
+	xStatus = xTaskCreate(prvLedBlink1,(signed char*)"LED1",configMINIMAL_STACK_SIZE,
+	        NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Task - LED 1 created\n");
+		results++;
+	}
 
-	xTaskCreate(prvLedBlink1,(signed char*)"LED1",configMINIMAL_STACK_SIZE,
-	            NULL, tskIDLE_PRIORITY + 1, NULL);
+	xStatus = xTaskCreate(prvLcdShow,(signed char*)"LcdShow",configMINIMAL_STACK_SIZE,
+			NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Task - Lcd show created\n");
+		results++;
+	}
 
-    xTaskCreate(prvLcdShow,(signed char*)"LcdShow",configMINIMAL_STACK_SIZE,
-            	NULL, tskIDLE_PRIORITY + 1, NULL);
+	xStatus = xTaskCreate(prvShowTechInfo,(signed char*)"TechInfo",configMINIMAL_STACK_SIZE,
+            NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Task - tech info created\n");
+		results++;
+	}
 
-    xTaskCreate(prvShowTechInfo,(signed char*)"TechInfo",configMINIMAL_STACK_SIZE,
-            	NULL, tskIDLE_PRIORITY + 1, NULL);
-
-
-	//USART2QueueSendString("Test USART 2");
-    USART2WriteByte('a');
+	if(results == 8) log("Initialization successful!!!");
     vTaskDelete(NULL);
 }
 
@@ -144,16 +171,7 @@ static void prvUsartHandler(void *pvParameters) {
 	}
 }
 
-void USART2QueueSendString(uint8_t *data){
-	portBASE_TYPE xStatus;
 
-	while(*data){
-		xStatus = xQueueSend(xQueueUsart2Tx, data, 100);
-		if (xStatus == pdPASS){
-			data++;
-		}
-	}
-}
 
 static void prvUsart2Transmitter(void *pvParameters) {
 	portBASE_TYPE xStatus;

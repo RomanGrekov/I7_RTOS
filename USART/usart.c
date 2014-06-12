@@ -48,12 +48,12 @@ void USART2Init(uint16_t boudrate, uint32_t f_cpu){
 }
 
 void USART1WriteByte(uint8_t data) {
-	while(!(USART1->SR & USART_SR_TC)); //Waiting until bit TC in register SR not 1
+	while(!(USART1->SR & USART_SR_TXE)); //Waiting until bit TC in register SR not 1
 	USART1->DR=data; //Send byte
 }
 
 void USART2WriteByte(uint8_t data) {
-	while(!(USART2->SR & USART_SR_TC)); //Waiting until bit TC in register SR not 1
+	while(!(USART2->SR & USART_SR_TXE)); //Waiting until bit TC in register SR not 1
 	USART2->DR=data; //Send byte
 }
 
@@ -118,4 +118,14 @@ void USART1_IRQHandler(void){
 	}
 }
 
+void USART2QueueSendString(uint8_t *data){
+	portBASE_TYPE xStatus;
+
+	while(*data){
+		xStatus = xQueueSend(xQueueUsart2Tx, data, 100);
+		if (xStatus == pdPASS){
+			data++;
+		}
+	}
+}
 
