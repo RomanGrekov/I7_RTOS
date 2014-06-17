@@ -127,7 +127,7 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
-	xStatus = xTaskCreate(prvUsartHandler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
+	xStatus = xTaskCreate(prvUsart_1_RX_Handler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
 	        NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
 		log("Task - Usart 1 receiver to Lcd created\n");

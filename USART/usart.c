@@ -129,7 +129,7 @@ void USART2QueueSendString(uint8_t *data){
 	}
 }
 
-void prvUsartHandler(void *pvParameters) {
+void prvUsart_1_RX_Handler(void *pvParameters) {
 	portBASE_TYPE xStatus;
 	uint8_t a;
 	for (;;) {
