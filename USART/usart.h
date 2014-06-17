@@ -15,5 +15,8 @@ uint8_t USART2ReadByte(void);
 void USART1SendString(uint8_t *data);
 void USART2SendString(uint8_t *data);
 
+void prvUsartHandler(void *pvParameters);
+void prvUsart2Transmitter(void *pvParameters);
+
 
 #endif

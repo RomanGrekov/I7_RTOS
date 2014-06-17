@@ -12,7 +12,7 @@
 #define USART1_RX_QUEUE_SIZE 32
 #define USART1_TX_QUEUE_SIZE 32
 
-#define USART2_TX_QUEUE_SIZE 10
+#define USART2_TX_QUEUE_SIZE 32
 
 xQueueHandle xQueueUsart1Rx;
 xQueueHandle xQueueUsart1Tx;

@@ -19,8 +19,7 @@ static void prvLedBlink1( void *pvParameters );
 static void prvLcdShow( void *pvParameters );
 static void prvShowTechInfo( void *pvParameters );
 static void prvInitall( void *pvParameters );
-static void prvUsartHandler(void *pvParameters);
-static void prvUsart2Transmitter (void *pvParameters);
+
 void USART2QueueSendString(uint8_t *data);
 
 void vApplicationTickHook( void );
@@ -110,6 +109,7 @@ void prvInitall( void *pvParameters )
 	xStatus = xTaskCreate(prvUsart2Transmitter,(signed char*)"USART2_transmitter",configMINIMAL_STACK_SIZE,
 	        	NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
+		log("\n");
 		log("Queue - Usart 2 TX created\n");
 		log("Task - Usart 2 sender created\n");
 		results++;
@@ -159,30 +159,6 @@ void prvInitall( void *pvParameters )
     vTaskDelete(NULL);
 }
 
-
-static void prvUsartHandler(void *pvParameters) {
-	portBASE_TYPE xStatus;
-	uint8_t a;
-	for (;;) {
-		xStatus = xQueueReceive(xQueueUsart1Rx, &a, portMAX_DELAY);
-		if (xStatus == pdPASS){
-			xQueueSendToBack(xQueueLCD, &a, 100);
-		}
-	}
-}
-
-
-
-static void prvUsart2Transmitter(void *pvParameters) {
-	portBASE_TYPE xStatus;
-	uint8_t a;
-	for (;;) {
-		xStatus = xQueueReceive(xQueueUsart2Tx, &a, portMAX_DELAY);
-		if (xStatus == pdPASS){
-			USART2WriteByte(a);
-		}
-	}
-}
 
 void vApplicationTickHook( void )
 {

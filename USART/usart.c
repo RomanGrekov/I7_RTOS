@@ -129,3 +129,29 @@ void USART2QueueSendString(uint8_t *data){
 	}
 }
 
+void prvUsartHandler(void *pvParameters) {
+	portBASE_TYPE xStatus;
+	uint8_t a;
+	for (;;) {
+		xStatus = xQueuePeek(xQueueUsart1Rx, &a, portMAX_DELAY);
+		if (xStatus == pdPASS){
+			xQueueSendToBack(xQueueUsart2Tx, &a, 100);
+		}
+		xStatus = xQueueReceive(xQueueUsart1Rx, &a, portMAX_DELAY);
+		if (xStatus == pdPASS){
+			xQueueSendToBack(xQueueLCD, &a, 100);
+		}
+	}
+}
+
+void prvUsart2Transmitter(void *pvParameters) {
+	portBASE_TYPE xStatus;
+	uint8_t a;
+	for (;;) {
+		xStatus = xQueueReceive(xQueueUsart2Tx, &a, portMAX_DELAY);
+		if (xStatus == pdPASS){
+			USART2WriteByte(a);
+		}
+	}
+}
+
