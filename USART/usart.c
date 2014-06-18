@@ -1,6 +1,7 @@
 #include "usart.h"
 
 #include "FreeRTOS.h"
+#include "at_parser/at_parser.h"
 
 void USART1Init(uint16_t boudrate, uint32_t f_cpu){
     RCC->APB2ENR |= RCC_APB2ENR_IOPAEN; //Clock port A
@@ -132,14 +133,23 @@ void USART2QueueSendString(uint8_t *data){
 void prvUsart_1_RX_Handler(void *pvParameters) {
 	portBASE_TYPE xStatus;
 	uint8_t a;
+	at_response response;
 	for (;;) {
+		/*
 		xStatus = xQueuePeek(xQueueUsart1Rx, &a, portMAX_DELAY);
 		if (xStatus == pdPASS){
 			xQueueSendToBack(xQueueUsart2Tx, &a, 100);
 		}
+		 */
 		xStatus = xQueueReceive(xQueueUsart1Rx, &a, portMAX_DELAY);
 		if (xStatus == pdPASS){
-			xQueueSendToBack(xQueueLCD, &a, 100);
+			if (FOUND == USARTCheckData(a, &response)){
+				xQueueSendToBack(xQueueAtResponse, &response, 100);
+				log("Response found: ");
+				log(&response.response);
+				log("\n");
+			}
+
 		}
 	}
 }

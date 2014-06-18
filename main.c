@@ -13,6 +13,7 @@
 #include "common/common_funcs.h"
 #include "USART/usart.h"
 #include "globs.h"
+#include "at_parser/at_parser.h"
 
 static void SetupHardware( void );
 static void prvLedBlink1( void *pvParameters );
@@ -86,6 +87,17 @@ void prvLcdShow( void *pvParameters )
     }
 }
 
+void prvShowAtResponse(void *pvParameters){
+	portBASE_TYPE xStatus;
+	at_response response;
+	while(1){
+		xStatus = xQueueReceive(xQueueAtResponse, &response, portMAX_DELAY);
+		if (xStatus == pdPASS){
+			put_to_lcd_queue(&response);
+		}
+	}
+}
+
 void prvShowTechInfo( void *pvParameters ){
 	unsigned char symb[32];
 	portBASE_TYPE xStatus;
@@ -127,6 +139,12 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
+	xQueueAtResponse = xQueueCreate(AT_RESPONSE_QUEUE_SIZE, sizeof(at_response));
+	if (xQueueAtResponse != NULL) {
+		log("Queue - AT response created\n");
+		results++;
+	}
+
 	xStatus = xTaskCreate(prvUsart_1_RX_Handler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
 	        NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
@@ -155,7 +173,14 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
-	if(results == 8) log("Initialization successful!!!");
+	xStatus = xTaskCreate(prvShowAtResponse,(signed char*)"ShowAtResponse",configMINIMAL_STACK_SIZE,
+            NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Task - show at response created\n");
+		results++;
+	}
+
+	if(results == 10) log("Initialization successful!!!");
     vTaskDelete(NULL);
 }
 
