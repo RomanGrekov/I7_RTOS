@@ -90,10 +90,27 @@ void prvLcdShow( void *pvParameters )
 void prvShowAtResponse(void *pvParameters){
 	portBASE_TYPE xStatus;
 	at_response response;
+	found_template t_result;
+	unsigned char tel_number[13];
+
+	at_template templates[]={
+			{8, "+CLIP: \""}
+	};
+	data_in_resp result={13, {'0'}};
+
 	while(1){
 		xStatus = xQueueReceive(xQueueAtResponse, &response, portMAX_DELAY);
 		if (xStatus == pdPASS){
-			put_to_lcd_queue(&response);
+			/*
+			t_result = find_template_in_response(&response, &templates[0]);
+			if (t_result.found == FOUND){
+				strncpy(tel_number, response.response+8, 13);
+				put_to_lcd_queue(&tel_number);
+			}
+			*/
+			if(get_data_from_response(&response, &templates[0], &result) == FOUND){
+				put_to_lcd_queue(result.data);
+			}
 		}
 	}
 }

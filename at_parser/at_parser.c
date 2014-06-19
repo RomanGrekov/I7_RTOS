@@ -1,6 +1,5 @@
 #include "at_parser.h"
 
-
 unsigned char USARTCheckData(unsigned char symb, at_response * res){
 	enum{
 		clear = 0,
@@ -42,25 +41,22 @@ unsigned char USARTCheckData(unsigned char symb, at_response * res){
 	}
 	return NOT_FOUND;
 }
-/*
-struct found_template find_template(uint8_t *resp, uint8_t *template)
-{
-	uint8_t t_size, r_size;
-	uint8_t shift=0, cnt=0, found=0;
-	struct found_template t_found;
-	r_size = getSize(resp);
-	t_size = getSize(template);
 
-	t_found.found = 0;
-	while((r_size - shift) >= t_size && t_size <= r_size){
+found_template find_template(uint8_t *resp, uint8_t resp_size, uint8_t *template, uint8_t templ_size)
+{
+	uint8_t shift=0, cnt=0, found=0, i;
+	found_template t_found;
+
+	t_found.found = NOT_FOUND;
+	while((resp_size - shift) >= templ_size && templ_size <= resp_size){
 		found = 1;
-		for (uint32_t i=0; i < t_size; i++)
+		for (i=0; i < templ_size; i++)
 			if (resp[i+shift] != template[i]){
 				found = 0;
 				break;
 			}
 		if(found == 1){
-			t_found.found = 1;
+			t_found.found = FOUND;
 			t_found.shift = shift;
 			return t_found;
 		}
@@ -69,14 +65,24 @@ struct found_template find_template(uint8_t *resp, uint8_t *template)
 	return t_found;// not found
 }
 
-uint8_t getSize(uint8_t *my_array){
-	uint8_t i=0;
-	while(*my_array++){
-		i++;
-	}
-	return i;
+found_template find_template_in_response(at_response *response, at_template *template){
+	return find_template(&response->response, response->size, template->template, template->size);
 }
 
+uint8_t get_data_from_response(at_response *response, at_template *template, data_in_resp *data){
+	found_template t_result;
+
+	t_result = find_template_in_response(response, template);
+	if (t_result.found == FOUND){
+		strncpy(data->data, response->response+t_result.shift+template->size, data->size);
+		data->data[data->size]=0;
+		return FOUND;
+	}
+
+	return NOT_FOUND;
+}
+
+/*
 uint8_t USARTFindCmd(uint8_t *template){
 	//uint8_t RespHead_ = RespHead; //Save buffer parameters in case if command not found
 	//uint8_t RespCount_ = RespCount;

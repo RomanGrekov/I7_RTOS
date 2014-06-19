@@ -14,6 +14,7 @@
 #define USART2_TX_QUEUE_SIZE 32
 #define AT_RESPONSE_QUEUE_SIZE 5
 #define AT_RESPONSE_SIZE 50
+#define MAX_DATA_SIZE_IN_RESPONSE 50
 
 xQueueHandle xQueueUsart1Rx;
 xQueueHandle xQueueUsart1Tx;
