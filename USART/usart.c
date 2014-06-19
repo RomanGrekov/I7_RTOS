@@ -145,9 +145,9 @@ void prvUsart_1_RX_Handler(void *pvParameters) {
 		if (xStatus == pdPASS){
 			if (FOUND == USARTCheckData(a, &response)){
 				xQueueSendToBack(xQueueAtResponse, &response, 100);
-				log("Response found: ");
-				log(&response.response);
-				log("\n");
+				log("Response found: ", DEBUG);
+				log(&response.response, DEBUG);
+				log("\n", DEBUG);
 			}
 
 		}

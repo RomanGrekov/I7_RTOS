@@ -138,66 +138,66 @@ void prvInitall( void *pvParameters )
 	xStatus = xTaskCreate(prvUsart2Transmitter,(signed char*)"USART2_transmitter",configMINIMAL_STACK_SIZE,
 	        	NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("\n");
-		log("Queue - Usart 2 TX created\n");
-		log("Task - Usart 2 sender created\n");
+		log("\n", INFO);
+		log("Queue - Usart 2 TX created\n", INFO);
+		log("Task - Usart 2 sender created\n", INFO);
 		results++;
 	}
 
 	xQueueLCD = xQueueCreate(LCD_QUEUE_SIZE, sizeof(unsigned char));
 	if (xQueueLCD != NULL){
-		log("Queue - Lcd created\n");
+		log("Queue - Lcd created\n", INFO);
 		results++;
 	}
 
 	xQueueUsart1Rx = xQueueCreate(USART1_RX_QUEUE_SIZE, sizeof(unsigned char));
 	if (xQueueUsart1Rx != NULL) {
-		log("Queue - USART 1 RX created\n");
+		log("Queue - USART 1 RX created\n", INFO);
 		results++;
 	}
 
 	xQueueAtResponse = xQueueCreate(AT_RESPONSE_QUEUE_SIZE, sizeof(at_response));
 	if (xQueueAtResponse != NULL) {
-		log("Queue - AT response created\n");
+		log("Queue - AT response created\n", INFO);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvUsart_1_RX_Handler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
 	        NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - Usart 1 receiver to Lcd created\n");
+		log("Task - Usart 1 receiver to Lcd created\n", INFO);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvLedBlink1,(signed char*)"LED1",configMINIMAL_STACK_SIZE,
 	        NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - LED 1 created\n");
+		log("Task - LED 1 created\n", INFO);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvLcdShow,(signed char*)"LcdShow",configMINIMAL_STACK_SIZE,
 			NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - Lcd show created\n");
+		log("Task - Lcd show created\n", INFO);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvShowTechInfo,(signed char*)"TechInfo",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - tech info created\n");
+		log("Task - tech info created\n", INFO);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvShowAtResponse,(signed char*)"ShowAtResponse",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - show at response created\n");
+		log("Task - show at response created\n", INFO);
 		results++;
 	}
 
-	if(results == 10) log("Initialization successful!!!");
+	if(results == 10) log("Initialization successful!!!", INFO);
     vTaskDelete(NULL);
 }
 

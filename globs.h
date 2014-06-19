@@ -6,7 +6,12 @@
 #include "task.h"
 #include "USART/usart.h"
 
-#define Debug 1
+enum {
+	EMERGANCY,
+	INFO,
+	DEBUG
+};
+#define DEBUG_LEVEL DEBUG
 
 #define LCD_QUEUE_SIZE 32
 #define USART1_RX_QUEUE_SIZE 32
@@ -22,6 +27,6 @@ xQueueHandle xQueueUsart2Tx;
 xQueueHandle xQueueLCD;
 xQueueHandle xQueueAtResponse;
 
-void log(uint8_t *data);
+void log(uint8_t *data, uint8_t level);
 
 #endif
