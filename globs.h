@@ -4,6 +4,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "task.h"
+#include "semphr.h"
 #include "USART/usart.h"
 
 enum {
@@ -26,6 +27,11 @@ xQueueHandle xQueueUsart1Tx;
 xQueueHandle xQueueUsart2Tx;
 xQueueHandle xQueueLCD;
 xQueueHandle xQueueAtResponse;
+xSemaphoreHandle xUsart2TxMutex;
+xSemaphoreHandle xLcdMutex;
+xSemaphoreHandle xUsart1TxMutex;
+xSemaphoreHandle xAtResponseMutex;
+
 
 void log(uint8_t *data, uint8_t level);
 

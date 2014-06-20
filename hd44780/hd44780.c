@@ -527,22 +527,26 @@ portBASE_TYPE put_to_lcd_queue(uint8_t *p){
 	portBASE_TYPE xStatus;
 	uint8_t i=0, a=' ';
 
-	while(*p){
-		xStatus = xQueueSendToBack(xQueueLCD, p, 10);
-		p++;
-		if (xStatus == pdPASS) {
-			i++;
+	if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdTRUE){
+		while(*p){
+			xStatus = xQueueSendToBack(xQueueLCD, p, 10);
+			p++;
+			if (xStatus == pdPASS) {
+				i++;
+			}
+			else return xStatus;
 		}
-		else return xStatus;
-	}
-	while(i < LCD_QUEUE_SIZE){
-		xStatus = xQueueSendToBack(xQueueLCD, &a, 10);
-		if (xStatus == pdPASS) {
-			i++;
+		while(i < LCD_QUEUE_SIZE){
+			xStatus = xQueueSendToBack(xQueueLCD, &a, 10);
+			if (xStatus == pdPASS) {
+				i++;
+			}
+			else return xStatus;
 		}
-		else return xStatus;
+		xSemaphoreGive(xLcdMutex);
+		return pdPASS;
 	}
-	return pdPASS;
+	else return pdFAIL;
 }
 
 //-------------------------------

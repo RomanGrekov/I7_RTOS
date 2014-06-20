@@ -17,6 +17,9 @@ void USART2SendString(uint8_t *data);
 
 void prvUsart_1_RX_Handler(void *pvParameters);
 void prvUsart2Transmitter(void *pvParameters);
+void prvUsart1Transmitter(void *pvParameters);
+void USART1QueueSendString(uint8_t *data);
+void USART2QueueSendString(uint8_t *data);
 
 
 #endif

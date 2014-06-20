@@ -122,11 +122,28 @@ void USART1_IRQHandler(void){
 void USART2QueueSendString(uint8_t *data){
 	portBASE_TYPE xStatus;
 
-	while(*data){
-		xStatus = xQueueSend(xQueueUsart2Tx, data, 100);
-		if (xStatus == pdPASS){
-			data++;
+	if(xSemaphoreTake(xUsart2TxMutex, 100/portTICK_RATE_MS) == pdTRUE){
+		while(*data){
+			xStatus = xQueueSend(xQueueUsart2Tx, data, 100);
+			if (xStatus == pdPASS){
+				data++;
+			}
 		}
+		xSemaphoreGive(xUsart2TxMutex);
+	}
+}
+
+void USART1QueueSendString(uint8_t *data){
+	portBASE_TYPE xStatus;
+
+	if(xSemaphoreTake(xUsart1TxMutex, portMAX_DELAY) == pdTRUE){
+		while(*data){
+			xStatus = xQueueSend(xQueueUsart1Tx, data, 100);
+			if (xStatus == pdPASS){
+				data++;
+			}
+		}
+		xSemaphoreGive(xUsart1TxMutex);
 	}
 }
 
@@ -135,21 +152,17 @@ void prvUsart_1_RX_Handler(void *pvParameters) {
 	uint8_t a;
 	at_response response;
 	for (;;) {
-		/*
-		xStatus = xQueuePeek(xQueueUsart1Rx, &a, portMAX_DELAY);
-		if (xStatus == pdPASS){
-			xQueueSendToBack(xQueueUsart2Tx, &a, 100);
-		}
-		 */
 		xStatus = xQueueReceive(xQueueUsart1Rx, &a, portMAX_DELAY);
 		if (xStatus == pdPASS){
 			if (FOUND == USARTCheckData(a, &response)){
-				xQueueSendToBack(xQueueAtResponse, &response, 100);
-				log("Response found: ", DEBUG);
-				log(&response.response, DEBUG);
-				log("\n", DEBUG);
+				if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdTRUE){
+					xQueueSendToBack(xQueueAtResponse, &response, 100);
+					log("Response found: ", DEBUG);
+					log(&response.response, DEBUG);
+					log("\n", DEBUG);
+					xSemaphoreGive(xAtResponseMutex);
+				}
 			}
-
 		}
 	}
 }
@@ -165,3 +178,13 @@ void prvUsart2Transmitter(void *pvParameters) {
 	}
 }
 
+void prvUsart1Transmitter(void *pvParameters) {
+	portBASE_TYPE xStatus;
+	uint8_t a;
+	for (;;) {
+		xStatus = xQueueReceive(xQueueUsart1Tx, &a, portMAX_DELAY);
+		if (xStatus == pdPASS){
+			USART1WriteByte(a);
+		}
+	}
+}

@@ -14,6 +14,7 @@
 #include "USART/usart.h"
 #include "globs.h"
 #include "at_parser/at_parser.h"
+#include "sim900/sim900.h"
 
 static void SetupHardware( void );
 static void prvLedBlink1( void *pvParameters );
@@ -35,6 +36,7 @@ int main(void)
 	USART2Init(9600, configCPU_CLOCK_HZ/2);
 	//USART2InterrInit();
 	lcd_init();
+	InitSim900Port();
 
     xTaskCreate(prvInitall,(signed char*)"Initall",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
@@ -88,29 +90,14 @@ void prvLcdShow( void *pvParameters )
 }
 
 void prvShowAtResponse(void *pvParameters){
-	portBASE_TYPE xStatus;
-	at_response response;
-	found_template t_result;
-	unsigned char tel_number[13];
-
 	at_template templates[]={
 			{8, "+CLIP: \""}
 	};
 	data_in_resp result={13, {'0'}};
 
 	while(1){
-		xStatus = xQueueReceive(xQueueAtResponse, &response, portMAX_DELAY);
-		if (xStatus == pdPASS){
-			/*
-			t_result = find_template_in_response(&response, &templates[0]);
-			if (t_result.found == FOUND){
-				strncpy(tel_number, response.response+8, 13);
-				put_to_lcd_queue(&tel_number);
-			}
-			*/
-			if(get_data_from_response(&response, &templates[0], &result) == FOUND){
-				put_to_lcd_queue(result.data);
-			}
+		if(find_data_in_resp(&templates[0], &result) == FOUND){
+			put_to_lcd_queue(result.data);
 		}
 	}
 }
@@ -132,6 +119,11 @@ void prvInitall( void *pvParameters )
 	portBASE_TYPE xStatus;
 	uint8_t results=0;
 
+
+	xUsart2TxMutex = xSemaphoreCreateMutex();
+	if (xUsart2TxMutex != NULL) {
+		results++;
+	}
 	xQueueUsart2Tx = xQueueCreate(USART2_TX_QUEUE_SIZE, sizeof(unsigned char));
 	if (xQueueUsart2Tx != NULL) results++;
 
@@ -139,8 +131,15 @@ void prvInitall( void *pvParameters )
 	        	NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
 		log("\n", INFO);
+		log("Mutex - Usart 2 AT resource created\n", INFO);
 		log("Queue - Usart 2 TX created\n", INFO);
 		log("Task - Usart 2 sender created\n", INFO);
+		results++;
+	}
+
+	xLcdMutex = xSemaphoreCreateMutex();
+	if (xLcdMutex != NULL) {
+		log("Mutex - LCD resource created\n", INFO);
 		results++;
 	}
 
@@ -150,9 +149,34 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
+	xQueueUsart1Tx = xQueueCreate(USART1_TX_QUEUE_SIZE, sizeof(unsigned char));
+	if (xQueueUsart2Tx != NULL){
+		log("Queue - Usart 1 TX created\n", INFO);
+		results++;
+	}
+
+	xUsart1TxMutex = xSemaphoreCreateMutex();
+		if (xUsart1TxMutex != NULL) {
+			log("Mutex - Usart 1 AT resource created\n", INFO);
+			results++;
+		}
+
+	xStatus = xTaskCreate(prvUsart1Transmitter,(signed char*)"USART1_transmitter",configMINIMAL_STACK_SIZE,
+		        NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Task - Usart 1 sender created\n", INFO);
+		results++;
+	}
+
 	xQueueUsart1Rx = xQueueCreate(USART1_RX_QUEUE_SIZE, sizeof(unsigned char));
 	if (xQueueUsart1Rx != NULL) {
 		log("Queue - USART 1 RX created\n", INFO);
+		results++;
+	}
+
+	xAtResponseMutex = xSemaphoreCreateMutex();
+	if (xAtResponseMutex != NULL) {
+		log("Mutex - At response resource created\n", INFO);
 		results++;
 	}
 
@@ -197,7 +221,13 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
-	if(results == 10) log("Initialization successful!!!", INFO);
+	if(SimInit() == MODEM_TEST_PASS){
+		log("Modem - test passed\n", INFO);
+		results++;
+	}
+
+	if(results == 17) log("Initialization successful!!!", INFO);
+
     vTaskDelete(NULL);
 }
 

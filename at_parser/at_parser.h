@@ -32,5 +32,7 @@ unsigned char USARTCheckData(unsigned char symb, at_response * res);
 found_template find_template(uint8_t *resp, uint8_t resp_size, uint8_t *template, uint8_t templ_size);
 found_template find_template_in_response(at_response *response, at_template *template);
 uint8_t get_data_from_response(at_response *response, at_template *template, data_in_resp *data);
+uint8_t find_data_in_resp(at_template *template, data_in_resp *data);
+uint8_t find_answer(at_template *template);
 
 #endif
