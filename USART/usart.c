@@ -156,7 +156,7 @@ void prvUsart_1_RX_Handler(void *pvParameters) {
 		if (xStatus == pdPASS){
 			if (FOUND == USARTCheckData(a, &response)){
 				if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdTRUE){
-					xQueueSendToBack(xQueueAtResponse, &response, 100);
+					xStatus = xQueueSendToBack(xQueueAtResponse, &response, 100);
 					log("Response found: ", DEBUG);
 					log(&response.response, DEBUG);
 					log("\n", DEBUG);

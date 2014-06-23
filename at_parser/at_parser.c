@@ -118,6 +118,7 @@ uint8_t find_answer(at_template *template){
 			if (xStatus == pdPASS){
 				t_result = find_template_in_response(&response, template);
 				if (t_result.found == FOUND){
+					xSemaphoreGive(xAtResponseMutex);
 					return FOUND;
 				}
 				else{
