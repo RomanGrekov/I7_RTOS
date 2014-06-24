@@ -21,16 +21,19 @@ enum {
 #define AT_RESPONSE_QUEUE_SIZE 5
 #define AT_RESPONSE_SIZE 50
 #define MAX_DATA_SIZE_IN_RESPONSE 50
+#define BUTTONS_BUF_SIZE 5
 
 xQueueHandle xQueueUsart1Rx;
 xQueueHandle xQueueUsart1Tx;
 xQueueHandle xQueueUsart2Tx;
 xQueueHandle xQueueLCD;
 xQueueHandle xQueueAtResponse;
+xQueueHandle xQueueButtons;
 xSemaphoreHandle xUsart2TxMutex;
 xSemaphoreHandle xLcdMutex;
 xSemaphoreHandle xUsart1TxMutex;
 xSemaphoreHandle xAtResponseMutex;
+xSemaphoreHandle xButtonsMutex;
 
 
 void log(uint8_t *data, uint8_t level);

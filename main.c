@@ -15,12 +15,14 @@
 #include "globs.h"
 #include "at_parser/at_parser.h"
 #include "sim900/sim900.h"
+#include "kb_driver/keyboard_driver.h"
 
 static void SetupHardware( void );
 static void prvLedBlink1( void *pvParameters );
 static void prvLcdShow( void *pvParameters );
 static void prvShowTechInfo( void *pvParameters );
 static void prvInitall( void *pvParameters );
+static void prvShowBtn(void *pvParameters);
 
 void USART2QueueSendString(uint8_t *data);
 
@@ -37,6 +39,7 @@ int main(void)
 	//USART2InterrInit();
 	lcd_init();
 	InitSim900Port();
+	init_keyboard();
 
     xTaskCreate(prvInitall,(signed char*)"Initall",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
@@ -111,6 +114,18 @@ void prvShowTechInfo( void *pvParameters ){
 	put_to_lcd_queue(symb);
 
 	vTaskDelete(NULL);
+}
+
+void prvShowBtn(void *pvParameters){
+	button *btn;
+	uint8_t symb[1];
+	while(1){
+		if(button_exists()){
+			btn = get_btn();
+			symb[0] = btn->button;
+			put_to_lcd_queue(symb);
+		}
+	}
 }
 
 
@@ -221,12 +236,38 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
+	xQueueButtons = xQueueCreate(BUTTONS_BUF_SIZE, sizeof(button));
+	if (xQueueButtons != NULL){
+		log("Queue - Buttons created\n", INFO);
+		results++;
+	}
+
+	xButtonsMutex = xSemaphoreCreateMutex();
+		if (xButtonsMutex != NULL) {
+			log("Mutex - Buttons resource created\n", INFO);
+			results++;
+		}
+
+	xStatus = xTaskCreate(prvCheckButtons,(signed char*)"CheckButtons",configMINIMAL_STACK_SIZE,
+            NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Task - check buttons created\n", INFO);
+		results++;
+	}
+
+	xStatus = xTaskCreate(prvShowBtn,(signed char*)"ShowButtons",configMINIMAL_STACK_SIZE,
+            NULL, tskIDLE_PRIORITY + 1, NULL);
+	if(xStatus == pdPASS){
+		log("Task - show buttons created\n", INFO);
+		results++;
+	}
+
 	if(SimInit() == MODEM_TEST_PASS){
 		log("Modem - test passed\n", INFO);
 		results++;
 	}
 
-	if(results == 17) log("Initialization successful!!!", INFO);
+	if(results == 21) log("Initialization successful!!!", INFO);
 
     vTaskDelete(NULL);
 }
