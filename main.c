@@ -16,17 +16,16 @@
 #include "at_parser/at_parser.h"
 #include "sim900/sim900.h"
 #include "kb_driver/keyboard_driver.h"
+#include "menu/menu.h"
 
 static void SetupHardware( void );
 static void prvLedBlink1( void *pvParameters );
 static void prvLcdShow( void *pvParameters );
 static void prvShowTechInfo( void *pvParameters );
 static void prvInitall( void *pvParameters );
-static void prvShowBtn(void *pvParameters);
+static void prvProcessMenu(void *pvParameters);
 
 void USART2QueueSendString(uint8_t *data);
-
-void vApplicationTickHook( void );
 
 int main(void)
 {
@@ -40,6 +39,7 @@ int main(void)
 	lcd_init();
 	InitSim900Port();
 	init_keyboard();
+	InitMenu();
 
     xTaskCreate(prvInitall,(signed char*)"Initall",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
@@ -116,14 +116,12 @@ void prvShowTechInfo( void *pvParameters ){
 	vTaskDelete(NULL);
 }
 
-void prvShowBtn(void *pvParameters){
+void prvProcessMenu(void *pvParameters){
 	button *btn;
-	uint8_t symb[1];
 	while(1){
 		if(button_exists()){
 			btn = get_btn();
-			symb[0] = btn->button;
-			put_to_lcd_queue(symb);
+			ProcessMenu(btn->button, btn->duration);
 		}
 	}
 }
@@ -255,10 +253,10 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
-	xStatus = xTaskCreate(prvShowBtn,(signed char*)"ShowButtons",configMINIMAL_STACK_SIZE,
+	xStatus = xTaskCreate(prvProcessMenu,(signed char*)"Process Menu",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - show buttons created\n", INFO);
+		log("Task - process menu created\n", INFO);
 		results++;
 	}
 
@@ -272,8 +270,3 @@ void prvInitall( void *pvParameters )
     vTaskDelete(NULL);
 }
 
-
-void vApplicationTickHook( void )
-{
-	unsigned char a=0;
-}

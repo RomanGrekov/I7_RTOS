@@ -528,7 +528,7 @@ portBASE_TYPE put_to_lcd_queue(uint8_t *p){
 	uint8_t i=0, a=' ';
 
 	if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdTRUE){
-		while(*p){
+		while(*p && i < LCD_QUEUE_SIZE){
 			xStatus = xQueueSendToBack(xQueueLCD, p, 10);
 			p++;
 			if (xStatus == pdPASS) {
