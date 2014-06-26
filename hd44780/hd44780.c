@@ -525,28 +525,46 @@ void shift_display(uint8_t direction)
 
 portBASE_TYPE put_to_lcd_queue(uint8_t *p){
 	portBASE_TYPE xStatus;
-	uint8_t i=0, a=' ';
+	uint8_t i, a;
 
-	if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdTRUE){
-		while(*p && i < LCD_QUEUE_SIZE){
-			xStatus = xQueueSendToBack(xQueueLCD, p, 10);
+	for(i=0; i<LCD_QUEUE_SIZE; i++){
+		if(*p){
+			a = *p;
 			p++;
-			if (xStatus == pdPASS) {
-				i++;
-			}
-			else return xStatus;
 		}
-		while(i < LCD_QUEUE_SIZE){
-			xStatus = xQueueSendToBack(xQueueLCD, &a, 10);
-			if (xStatus == pdPASS) {
-				i++;
-			}
-			else return xStatus;
+		else a=' ';
+
+		if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdPASS){
+			xStatus = xQueueSendToBack(xQueueLCD, &a, 0);
+			if (xStatus != pdPASS) return xStatus;
+			xSemaphoreGive(xLcdMutex);
 		}
-		xSemaphoreGive(xLcdMutex);
-		return pdPASS;
 	}
-	else return pdFAIL;
+	return pdPASS;
+}
+
+void prvLcdShow( void *pvParameters )
+{
+    uint8_t symb, buffer_cnt = 0;
+    portBASE_TYPE xStatus;
+
+    while(1){
+    	if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdPASS){
+    		xStatus = xQueueReceive(xQueueLCD, &symb, 0);
+			if (xStatus == pdPASS) {
+				if (buffer_cnt == 32){
+					lcd_clrscr();
+					buffer_cnt = 0;
+				}
+				if(buffer_cnt == 16){
+					lcd_goto(2,0);
+				}
+				lcd_putc(symb);
+				buffer_cnt++;
+			}
+			xSemaphoreGive(xLcdMutex);
+    	}
+    }
 }
 
 //-------------------------------

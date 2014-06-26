@@ -11,6 +11,7 @@ void turn_on_off(void){
 
 	do{
 		if (status != SimGetStatus()){
+			status == SimGetStatus();
 			show_status(SimGetStatus());
 		}
 
@@ -29,14 +30,14 @@ void turn_on_off(void){
 			break;
 		case '*':
 			retcode = SimInit();
-			if(retcode == MODEM_TEST_PASS)  put_to_lcd_queue("Modem test pass. 1-ON, 2-OFF, 3-Status");
-			if(retcode == MODEM_TEST_FAIL)  put_to_lcd_queue("Modem test fail. 1-ON, 2-OFF, 3-Status");
+			if(retcode == MODEM_TEST_PASS)  put_to_lcd_queue("Modem test pass. 1-ON, 3-OFF, *-Status");
+			if(retcode == MODEM_TEST_FAIL)  put_to_lcd_queue("Modem test fail. 1-ON, 3-OFF, *-Status");
 		}
 
-	}while (btn != '2');
+	}while (btn_val != '2');
 }
 
 void show_status(uint8_t status){
-	if(status == STATUS_ON)	put_to_lcd_queue("Modem is ON. 1-ON, 2-OFF, 3-Status");
-	if(status == STATUS_OFF)	put_to_lcd_queue("Modem is OFF. 1-ON, 2-OFF, 3-Status");
+	if(status == STATUS_ON)	put_to_lcd_queue("Modem is ON. 1-ON, 3-OFF, *-Status");
+	if(status == STATUS_OFF) put_to_lcd_queue("Modem is OFF. 1-ON, 3-OFF, *-Status");
 }

@@ -20,7 +20,6 @@
 
 static void SetupHardware( void );
 static void prvLedBlink1( void *pvParameters );
-static void prvLcdShow( void *pvParameters );
 static void prvShowTechInfo( void *pvParameters );
 static void prvInitall( void *pvParameters );
 static void prvProcessMenu(void *pvParameters);
@@ -68,29 +67,6 @@ void prvLedBlink1( void *pvParameters )
 		vTaskDelay(1000);
 	}
  }
-
-void prvLcdShow( void *pvParameters )
-{
-    unsigned char symb;
-    portBASE_TYPE xStatus;
-
-    unsigned char buffer_cnt = 0;
-
-    while(1){
-    	xStatus = xQueueReceive(xQueueLCD, &symb, portMAX_DELAY);
-    	if (xStatus == pdPASS) {
-        	if (buffer_cnt == 32){
-        		lcd_clrscr();
-        		buffer_cnt = 0;
-        	}
-        	if(buffer_cnt == 16){
-        		lcd_goto(2,0);
-        	}
-    		lcd_putc(symb);
-    	}
-    	buffer_cnt++;
-    }
-}
 
 void prvShowAtResponse(void *pvParameters){
 	at_template templates[]={

@@ -101,7 +101,6 @@ void ProcessMenu(uint8_t btn, uint8_t duaration){
 					changeMenu(MENU_CHILD);
 				}
 				else{// If view exists, call it
-					menu_changed = 1;
 					callView();
 				}
 				break;
