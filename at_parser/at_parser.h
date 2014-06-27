@@ -34,5 +34,6 @@ found_template find_template_in_response(at_response *response, at_template *tem
 uint8_t get_data_from_response(at_response *response, at_template *template, data_in_resp *data);
 uint8_t find_data_in_resp(at_template *template, data_in_resp *data);
 uint8_t find_answer(at_template *template);
+void flush_answers(void);
 
 #endif

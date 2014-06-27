@@ -11,8 +11,8 @@ void turn_on_off(void){
 
 	do{
 		if (status != SimGetStatus()){
-			status == SimGetStatus();
-			show_status(SimGetStatus());
+			status = SimGetStatus();
+			show_status(status);
 		}
 
 		btn = get_btn();

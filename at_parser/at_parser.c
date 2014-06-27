@@ -106,8 +106,8 @@ uint8_t find_data_in_resp(at_template *template, data_in_resp *data){
 }
 
 uint8_t find_answer(at_template *template){
-	unsigned portBASE_TYPE elements_in_queue = uxQueueMessagesWaiting(xQueueAtResponse);
-	unsigned portBASE_TYPE element=0;
+	uint8_t elements_in_queue = uxQueueMessagesWaiting(xQueueAtResponse);
+	uint8_t element=0;
 	portBASE_TYPE xStatus=pdPASS;
 	at_response response;
 	found_template t_result;
@@ -130,4 +130,11 @@ uint8_t find_answer(at_template *template){
 		xSemaphoreGive(xAtResponseMutex);
 	}
 	return NOT_FOUND;
+}
+
+void flush_answers(void){
+	if(xSemaphoreTake(xAtResponseMutex, 0) == pdTRUE){
+		xQueueReset(xQueueAtResponse);
+		xSemaphoreGive(xAtResponseMutex);
+	}
 }
