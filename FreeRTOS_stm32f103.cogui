@@ -22,6 +22,10 @@
 <part id="9"/>
 <part id="10"/>
 <part id="11"/>
+<part id="12"/>
+<part id="13"/>
+<part id="14"/>
+<part id="15"/>
 </presentation>
 </folder>
 </info>
@@ -62,9 +66,9 @@
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/FreeRTOS_stm32f103/menu/menu.h"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="145" selectionTopPixel="0"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="sim_on_off.c" partName="sim_on_off.c" path="C:/CooCox/CoIDE/workspace/I7_RTOS/menu/views/sim_on_off.c" title="sim_on_off.c" tooltip="C:/CooCox/CoIDE/workspace/I7_RTOS/menu/views/sim_on_off.c" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="sim_on_off.c" partName="sim_on_off.c" path="C:/CooCox/CoIDE/workspace/I7_RTOS/menu/views/sim_on_off.c" title="sim_on_off.c" tooltip="C:/CooCox/CoIDE/workspace/I7_RTOS/menu/views/sim_on_off.c" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/FreeRTOS_stm32f103/menu/views/sim_on_off.c"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="280" selectionTopPixel="69"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="556" selectionTopPixel="52"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="sim_on_off.h" partName="sim_on_off.h" path="C:/CooCox/CoIDE/workspace/I7_RTOS/menu/views/sim_on_off.h" title="sim_on_off.h" tooltip="C:/CooCox/CoIDE/workspace/I7_RTOS/menu/views/sim_on_off.h" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/FreeRTOS_stm32f103/menu/views/sim_on_off.h"/>
@@ -74,19 +78,37 @@
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/FreeRTOS_stm32f103/sim900/sim900.h"/>
 <editorState selectionHorizontalPixel="0" selectionLength="13" selectionOffset="59" selectionTopPixel="0"/>
 </editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="sim900.c" partName="sim900.c" path="C:/CooCox/CoIDE/workspace/I7_RTOS/sim900/sim900.c" title="sim900.c" tooltip="C:/CooCox/CoIDE/workspace/I7_RTOS/sim900/sim900.c" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/FreeRTOS_stm32f103/sim900/sim900.c"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2269" selectionTopPixel="545"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="at_parser.h" partName="at_parser.h" path="C:/CooCox/CoIDE/workspace/I7_RTOS/at_parser/at_parser.h" title="at_parser.h" tooltip="C:/CooCox/CoIDE/workspace/I7_RTOS/at_parser/at_parser.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/FreeRTOS_stm32f103/at_parser/at_parser.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="973" selectionTopPixel="1"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="usart.c" partName="usart.c" path="C:/CooCox/CoIDE/workspace/I7_RTOS/USART/usart.c" title="usart.c" tooltip="C:/CooCox/CoIDE/workspace/I7_RTOS/USART/usart.c" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/FreeRTOS_stm32f103/USART/usart.c"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5116" selectionTopPixel="2346"/>
+</editor>
+<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="at_parser.c" partName="at_parser.c" path="C:/CooCox/CoIDE/workspace/I7_RTOS/at_parser/at_parser.c" title="at_parser.c" tooltip="C:/CooCox/CoIDE/workspace/I7_RTOS/at_parser/at_parser.c" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/FreeRTOS_stm32f103/at_parser/at_parser.c"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2920" selectionTopPixel="1735"/>
+</editor>
 </editors>
 <views>
 <view id="org.coocox.builder.ui.views.ProjectView" partName="Project">
-<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="6">
+<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="0">
 <expanded>
 <element path="/FreeRTOS_stm32f103"/>
+<element path="/FreeRTOS_stm32f103/at_parser"/>
 <element path="/FreeRTOS_stm32f103/hd44780"/>
 <element path="/FreeRTOS_stm32f103/menu"/>
 <element path="/FreeRTOS_stm32f103/menu/views"/>
 <element path="/FreeRTOS_stm32f103/sim900"/>
+<element path="/FreeRTOS_stm32f103/USART"/>
 </expanded>
 <selection>
-<element path="/FreeRTOS_stm32f103/hd44780/hd44780.c"/>
+<element path="/FreeRTOS_stm32f103/at_parser/at_parser.c"/>
 </selection>
 </viewState>
 </view>
@@ -292,73 +314,27 @@
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/main.c"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/menu/menu.c"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/menu/views/sim_on_off.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/sim900/sim900.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/menu/views/sim_send_cmd.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/menu/views/sim_on_off.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/menu/views/sim_send_cmd.h"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/hd44780/hd44780.c"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/globs.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/hd44780/hd44780.h"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/clock/clock.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/sim900/sim900.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/at_parser/at_parser.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/at_parser/at_parser.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/FreeRTOS_stm32f103/USART/usart.c"/>
 </editors>
-<item historyLabel="sim900.h" index="3">
-<position info="not_deleted" x="59" y="13"/>
-</item>
-<item historyLabel="sim_on_off.h" index="5">
-<position info="not_deleted" x="128" y="0"/>
-</item>
-<item historyLabel="sim_send_cmd.h" index="6">
-<position info="not_deleted" x="130" y="0"/>
-</item>
-<item historyLabel="sim_send_cmd.c" index="4">
-<position info="not_deleted" x="53" y="0"/>
-</item>
-<item historyLabel="menu.c" index="1">
-<position info="not_deleted" x="314" y="95"/>
-</item>
-<item historyLabel="hd44780.c" index="7">
-<position info="not_deleted" x="13724" y="0"/>
-</item>
-<item historyLabel="hd44780.c" index="7">
-<position info="not_deleted" x="14321" y="0"/>
-</item>
-<item historyLabel="hd44780.c" index="7">
-<position info="not_deleted" x="14300" y="0"/>
-</item>
-<item historyLabel="globs.h" index="8">
-<position info="not_deleted" x="315" y="0"/>
-</item>
-<item historyLabel="hd44780.c" index="7">
-<position info="not_deleted" x="14110" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="1728" y="0"/>
-</item>
-<item historyLabel="hd44780.c" index="7">
-<position info="not_deleted" x="14819" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="554" y="0"/>
-</item>
-<item historyLabel="hd44780.c" index="7">
-<position info="not_deleted" x="14819" y="0"/>
-</item>
-<item historyLabel="hd44780.h" index="9">
-<position info="not_deleted" x="6502" y="0"/>
-</item>
-<item historyLabel="hd44780.c" index="7">
+<item historyLabel="hd44780.c" index="3">
 <position info="not_deleted" x="14431" y="0"/>
 </item>
 <item historyLabel="main.c" index="0">
 <position info="not_deleted" x="2261" y="0"/>
 </item>
-<item historyLabel="hd44780.c" index="7">
+<item historyLabel="hd44780.c" index="3">
 <position info="not_deleted" x="14801" y="0"/>
 </item>
 <item historyLabel="sim_on_off.c" index="2">
 <position info="not_deleted" x="89" y="0"/>
 </item>
-<item historyLabel="hd44780.c" index="7">
+<item historyLabel="hd44780.c" index="3">
 <position info="not_deleted" x="14801" y="0"/>
 </item>
 <item historyLabel="main.c" index="0">
@@ -373,7 +349,7 @@
 <item historyLabel="sim_on_off.c" index="2">
 <position/>
 </item>
-<item historyLabel="globs.h" index="8">
+<item historyLabel="globs.h" index="4">
 <position info="not_deleted" x="315" y="0"/>
 </item>
 <item historyLabel="sim_on_off.c" index="2">
@@ -427,7 +403,7 @@
 <item historyLabel="sim_on_off.c" index="2">
 <position info="not_deleted" x="405" y="0"/>
 </item>
-<item historyLabel="clock.c" index="10">
+<item historyLabel="clock.c" index="5">
 <position info="not_deleted" x="2328" y="0"/>
 </item>
 <item historyLabel="menu.c" index="1">
@@ -448,8 +424,53 @@
 <item historyLabel="menu.c" index="1">
 <position info="not_deleted" x="3420" y="0"/>
 </item>
-<item active="true" historyLabel="sim_on_off.c" index="2">
+<item historyLabel="sim_on_off.c" index="2">
 <position info="not_deleted" x="785" y="0"/>
+</item>
+<item historyLabel="sim900.c" index="6">
+<position info="not_deleted" x="654" y="0"/>
+</item>
+<item historyLabel="sim_on_off.c" index="2">
+<position info="not_deleted" x="444" y="0"/>
+</item>
+<item historyLabel="sim_on_off.c" index="2">
+<position info="not_deleted" x="556" y="0"/>
+</item>
+<item historyLabel="sim900.c" index="6">
+<position info="not_deleted" x="2063" y="0"/>
+</item>
+<item historyLabel="at_parser.c" index="7">
+<position info="not_deleted" x="2803" y="11"/>
+</item>
+<item historyLabel="sim900.c" index="6">
+<position info="not_deleted" x="2063" y="0"/>
+</item>
+<item historyLabel="at_parser.c" index="7">
+<position info="not_deleted" x="2803" y="11"/>
+</item>
+<item historyLabel="at_parser.c" index="7">
+<position info="not_deleted" x="3597" y="24"/>
+</item>
+<item historyLabel="at_parser.h" index="8">
+<position info="not_deleted" x="973" y="0"/>
+</item>
+<item historyLabel="sim900.c" index="6">
+<position info="not_deleted" x="2269" y="0"/>
+</item>
+<item historyLabel="at_parser.c" index="7">
+<position info="not_deleted" x="3675" y="0"/>
+</item>
+<item historyLabel="usart.c" index="9">
+<position info="not_deleted" x="4983" y="0"/>
+</item>
+<item historyLabel="at_parser.c" index="7">
+<position info="not_deleted" x="40" y="14"/>
+</item>
+<item historyLabel="usart.c" index="9">
+<position info="not_deleted" x="5116" y="0"/>
+</item>
+<item active="true" historyLabel="at_parser.c" index="7">
+<position info="not_deleted" x="0" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -458,6 +479,18 @@
 <actionBarAdvisor/>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="at_parser.c" tooltip="FreeRTOS_stm32f103/at_parser/at_parser.c">
+<persistable path="/FreeRTOS_stm32f103/at_parser/at_parser.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="usart.c" tooltip="FreeRTOS_stm32f103/USART/usart.c">
+<persistable path="/FreeRTOS_stm32f103/USART/usart.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="at_parser.h" tooltip="FreeRTOS_stm32f103/at_parser/at_parser.h">
+<persistable path="/FreeRTOS_stm32f103/at_parser/at_parser.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="sim900.c" tooltip="FreeRTOS_stm32f103/sim900/sim900.c">
+<persistable path="/FreeRTOS_stm32f103/sim900/sim900.c"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="sim900.h" tooltip="FreeRTOS_stm32f103/sim900/sim900.h">
 <persistable path="/FreeRTOS_stm32f103/sim900/sim900.h"/>
 </file>
@@ -469,9 +502,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="sim_send_cmd.c" tooltip="FreeRTOS_stm32f103/menu/views/sim_send_cmd.c">
 <persistable path="/FreeRTOS_stm32f103/menu/views/sim_send_cmd.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="sim900.c" tooltip="FreeRTOS_stm32f103/sim900/sim900.c">
-<persistable path="/FreeRTOS_stm32f103/sim900/sim900.c"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="sim_on_off.c" tooltip="FreeRTOS_stm32f103/menu/views/sim_on_off.c">
 <persistable path="/FreeRTOS_stm32f103/menu/views/sim_on_off.c"/>
@@ -491,17 +521,8 @@
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="usart.h" tooltip="FreeRTOS_stm32f103/USART/usart.h">
 <persistable path="/FreeRTOS_stm32f103/USART/usart.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="usart.c" tooltip="FreeRTOS_stm32f103/USART/usart.c">
-<persistable path="/FreeRTOS_stm32f103/USART/usart.c"/>
-</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="FreeRTOSConfig.h" tooltip="FreeRTOS_stm32f103/FreeRTOSConfig.h">
 <persistable path="/FreeRTOS_stm32f103/FreeRTOSConfig.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" name="readme.txt" tooltip="FreeRTOS_stm32f103/FreeRTOS/source/readme.txt">
-<persistable path="/FreeRTOS_stm32f103/FreeRTOS/source/readme.txt"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="mac.h" tooltip="FreeRTOS_stm32f103/hd44780/mac.h">
-<persistable path="/FreeRTOS_stm32f103/hd44780/mac.h"/>
 </file>
 </mruList>
 </workbench>

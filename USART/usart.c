@@ -155,11 +155,13 @@ void prvUsart_1_RX_Handler(void *pvParameters) {
 		xStatus = xQueueReceive(xQueueUsart1Rx, &a, portMAX_DELAY);
 		if (xStatus == pdPASS){
 			if (FOUND == USARTCheckData(a, &response)){
-				if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdTRUE){
-					xStatus = xQueueSendToBack(xQueueAtResponse, &response, 100);
-					log("Response found: ", DEBUG);
-					log(&response.response, DEBUG);
-					log("\n", DEBUG);
+				if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdPASS){
+					if(xQueueSendToBack(xQueueAtResponse, &response, 0) == pdPASS){
+						log("Response found: ", DEBUG_LEVEL);
+						log(&response.response, DEBUG_LEVEL);
+						log("\n", DEBUG_LEVEL);
+					}
+					else log("Can't add at response to queue", ERROR_LEVEL);
 					xSemaphoreGive(xAtResponseMutex);
 				}
 			}

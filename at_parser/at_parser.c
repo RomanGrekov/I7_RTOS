@@ -112,12 +112,16 @@ uint8_t find_answer(at_template *template){
 	at_response response;
 	found_template t_result;
 
-	if(xSemaphoreTake(xAtResponseMutex, 100/portTICK_RATE_MS) == pdTRUE){
-		while(xStatus == pdPASS && element < elements_in_queue){
-			xStatus = xQueueReceive(xQueueAtResponse, &response, 0);
-			if (xStatus == pdPASS){
+	if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdPASS){
+		log("---->", DEBUG_LEVEL);
+		while(element < elements_in_queue){
+			if(xQueueReceive(xQueueAtResponse, &response, 0) == pdPASS){
+				log("Check: ", DEBUG_LEVEL);
+				log(response.response, DEBUG_LEVEL);
+
 				t_result = find_template_in_response(&response, template);
 				if (t_result.found == FOUND){
+					log("---found", DEBUG_LEVEL);
 					xSemaphoreGive(xAtResponseMutex);
 					return FOUND;
 				}
@@ -125,6 +129,7 @@ uint8_t find_answer(at_template *template){
 					xQueueSend(xQueueAtResponse, &response, 0);
 					element++;
 				}
+				log("\n", DEBUG_LEVEL);
 			}
 		}
 		xSemaphoreGive(xAtResponseMutex);

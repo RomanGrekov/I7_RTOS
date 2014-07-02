@@ -46,26 +46,20 @@ uint8_t SimInit(void){
 	at_template ok_t= {2, "OK"};
 	at_template cfun_t = {8, "+CFUN: 1"};
 
-	log("Start modem test...\n", DEBUG);
-	log("Send string: at\n", DEBUG);
 	flush_answers();
 	USART1QueueSendString("at\r\n");
 	vTaskDelay(500/portTICK_RATE_MS);
 	if(find_answer(&ok_t) == NOT_FOUND){
-		log("OK response not found!!!\n", DEBUG);
+		flush_answers();
 		return MODEM_TEST_FAIL;
 	}
-	log("OK response found!\n", DEBUG);
 
-	log("Send string: at+cfun?\n", DEBUG);
 	USART1QueueSendString("at+cfun?\r\n");
-	vTaskDelay(500/portTICK_RATE_MS);
+	vTaskDelay(1000/portTICK_RATE_MS);
 	if(find_answer(&cfun_t) == NOT_FOUND){
-		log("CFUN response not found!!!\n", DEBUG);
+		flush_answers();
 		return MODEM_TEST_FAIL;
 	}
-	log("CFUN response found!\n", DEBUG);
-	log("Finish modem test...\n", DEBUG);
 
 	flush_answers();
 	return MODEM_TEST_PASS;

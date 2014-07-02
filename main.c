@@ -119,129 +119,129 @@ void prvInitall( void *pvParameters )
 	xStatus = xTaskCreate(prvUsart2Transmitter,(signed char*)"USART2_transmitter",configMINIMAL_STACK_SIZE,
 	        	NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("\n", INFO);
-		log("Mutex - Usart 2 AT resource created\n", INFO);
-		log("Queue - Usart 2 TX created\n", INFO);
-		log("Task - Usart 2 sender created\n", INFO);
+		log("\n", INFO_LEVEL);
+		log("Mutex - Usart 2 AT resource created\n", INFO_LEVEL);
+		log("Queue - Usart 2 TX created\n", INFO_LEVEL);
+		log("Task - Usart 2 sender created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xLcdMutex = xSemaphoreCreateMutex();
 	if (xLcdMutex != NULL) {
-		log("Mutex - LCD resource created\n", INFO);
+		log("Mutex - LCD resource created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xQueueLCD = xQueueCreate(LCD_QUEUE_SIZE, sizeof(unsigned char));
 	if (xQueueLCD != NULL){
-		log("Queue - Lcd created\n", INFO);
+		log("Queue - Lcd created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xQueueUsart1Tx = xQueueCreate(USART1_TX_QUEUE_SIZE, sizeof(unsigned char));
 	if (xQueueUsart2Tx != NULL){
-		log("Queue - Usart 1 TX created\n", INFO);
+		log("Queue - Usart 1 TX created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xUsart1TxMutex = xSemaphoreCreateMutex();
 		if (xUsart1TxMutex != NULL) {
-			log("Mutex - Usart 1 AT resource created\n", INFO);
+			log("Mutex - Usart 1 AT resource created\n", INFO_LEVEL);
 			results++;
 		}
 
 	xStatus = xTaskCreate(prvUsart1Transmitter,(signed char*)"USART1_transmitter",configMINIMAL_STACK_SIZE,
 		        NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - Usart 1 sender created\n", INFO);
+		log("Task - Usart 1 sender created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xQueueUsart1Rx = xQueueCreate(USART1_RX_QUEUE_SIZE, sizeof(unsigned char));
 	if (xQueueUsart1Rx != NULL) {
-		log("Queue - USART 1 RX created\n", INFO);
+		log("Queue - USART 1 RX created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xAtResponseMutex = xSemaphoreCreateMutex();
 	if (xAtResponseMutex != NULL) {
-		log("Mutex - At response resource created\n", INFO);
+		log("Mutex - At response resource created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xQueueAtResponse = xQueueCreate(AT_RESPONSE_QUEUE_SIZE, sizeof(at_response));
 	if (xQueueAtResponse != NULL) {
-		log("Queue - AT response created\n", INFO);
+		log("Queue - AT response created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvUsart_1_RX_Handler,(signed char*)"USARThandler",configMINIMAL_STACK_SIZE,
 	        NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - Usart 1 receiver to Lcd created\n", INFO);
+		log("Task - Usart 1 receiver to Lcd created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvLedBlink1,(signed char*)"LED1",configMINIMAL_STACK_SIZE,
 	        NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - LED 1 created\n", INFO);
+		log("Task - LED 1 created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvLcdShow,(signed char*)"LcdShow",configMINIMAL_STACK_SIZE,
 			NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - Lcd show created\n", INFO);
+		log("Task - Lcd show created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvShowTechInfo,(signed char*)"TechInfo",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - tech info created\n", INFO);
+		log("Task - tech info created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvShowAtResponse,(signed char*)"ShowAtResponse",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - show at response created\n", INFO);
+		log("Task - show at response created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xQueueButtons = xQueueCreate(BUTTONS_BUF_SIZE, sizeof(button));
 	if (xQueueButtons != NULL){
-		log("Queue - Buttons created\n", INFO);
+		log("Queue - Buttons created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xButtonsMutex = xSemaphoreCreateMutex();
 		if (xButtonsMutex != NULL) {
-			log("Mutex - Buttons resource created\n", INFO);
+			log("Mutex - Buttons resource created\n", INFO_LEVEL);
 			results++;
 		}
 
 	xStatus = xTaskCreate(prvCheckButtons,(signed char*)"CheckButtons",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - check buttons created\n", INFO);
+		log("Task - check buttons created\n", INFO_LEVEL);
 		results++;
 	}
 
 	xStatus = xTaskCreate(prvProcessMenu,(signed char*)"Process Menu",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
-		log("Task - process menu created\n", INFO);
+		log("Task - process menu created\n", INFO_LEVEL);
 		results++;
 	}
 
 	if(SimInit() == MODEM_TEST_PASS){
-		log("Modem - test passed\n", INFO);
+		log("Modem - test passed\n", INFO_LEVEL);
 		results++;
 	}
 
-	if(results == 21) log("Initialization successful!!!", INFO);
+	if(results == 21) log("Initialization successful!!!", INFO_LEVEL);
 
     vTaskDelete(NULL);
 }
