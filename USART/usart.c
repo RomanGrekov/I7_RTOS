@@ -137,6 +137,9 @@ void USART1QueueSendString(uint8_t *data){
 	portBASE_TYPE xStatus;
 
 	if(xSemaphoreTake(xUsart1TxMutex, portMAX_DELAY) == pdTRUE){
+		log("USART1 TX: ", DEBUG_LEVEL);
+		log(data, DEBUG_LEVEL);
+		log("\n", DEBUG_LEVEL);
 		while(*data){
 			xStatus = xQueueSend(xQueueUsart1Tx, data, 100);
 			if (xStatus == pdPASS){
@@ -148,12 +151,10 @@ void USART1QueueSendString(uint8_t *data){
 }
 
 void prvUsart_1_RX_Handler(void *pvParameters) {
-	portBASE_TYPE xStatus;
 	uint8_t a;
 	at_response response;
 	for (;;) {
-		xStatus = xQueueReceive(xQueueUsart1Rx, &a, portMAX_DELAY);
-		if (xStatus == pdPASS){
+		if (xQueueReceive(xQueueUsart1Rx, &a, portMAX_DELAY) == pdPASS){
 			if (FOUND == USARTCheckData(a, &response)){
 				if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdPASS){
 					if(xQueueSendToBack(xQueueAtResponse, &response, 0) == pdPASS){

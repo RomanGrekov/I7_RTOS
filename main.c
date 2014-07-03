@@ -78,6 +78,7 @@ void prvShowAtResponse(void *pvParameters){
 		if(find_data_in_resp(&templates[0], &result) == FOUND){
 			put_to_lcd_queue(result.data);
 		}
+		vTaskDelay(100);
 	}
 }
 

@@ -83,62 +83,65 @@ uint8_t get_data_from_response(at_response *response, at_template *template, dat
 }
 
 uint8_t find_data_in_resp(at_template *template, data_in_resp *data){
-	unsigned portBASE_TYPE elements_in_queue = uxQueueMessagesWaiting(xQueueAtResponse);
-	unsigned portBASE_TYPE element=0;
-	portBASE_TYPE xStatus=pdPASS;
+	uint8_t elements_in_queue;
+	uint8_t element=0;
 	at_response response;
 	found_template t_result;
 
-	if(xSemaphoreTake(xAtResponseMutex, 100/portTICK_RATE_MS) == pdTRUE){
-		while(xStatus == pdPASS && element < elements_in_queue){
-			xStatus = xQueueReceive(xQueueAtResponse, &response, 100/portTICK_RATE_MS);
-			if (xStatus == pdPASS){
-				if(get_data_from_response(&response, template, data) == FOUND)return FOUND;
-				else{
-					xQueueSend(xQueueAtResponse, &response, 0);
-					element++;
+	elements_in_queue = uxQueueMessagesWaiting(xQueueAtResponse);
+	if(elements_in_queue > 0){
+		if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdTRUE){
+			while(element < elements_in_queue){
+				if (xQueueReceive(xQueueAtResponse, &response, 0) == pdPASS){
+					if(get_data_from_response(&response, template, data) == FOUND){
+						xSemaphoreGive(xAtResponseMutex);
+						return FOUND;
+					}
+					else{
+						xQueueSend(xQueueAtResponse, &response, 0);
+						element++;
+					}
 				}
 			}
+			xSemaphoreGive(xAtResponseMutex);
 		}
-		xSemaphoreGive(xAtResponseMutex);
 	}
 	return NOT_FOUND;
 }
 
 uint8_t find_answer(at_template *template){
-	uint8_t elements_in_queue = uxQueueMessagesWaiting(xQueueAtResponse);
+	uint8_t elements_in_queue;
 	uint8_t element=0;
 	portBASE_TYPE xStatus=pdPASS;
 	at_response response;
 	found_template t_result;
 
-	if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdPASS){
-		log("---->", DEBUG_LEVEL);
-		while(element < elements_in_queue){
-			if(xQueueReceive(xQueueAtResponse, &response, 0) == pdPASS){
-				log("Check: ", DEBUG_LEVEL);
-				log(response.response, DEBUG_LEVEL);
-
-				t_result = find_template_in_response(&response, template);
-				if (t_result.found == FOUND){
-					log("---found", DEBUG_LEVEL);
-					xSemaphoreGive(xAtResponseMutex);
-					return FOUND;
+	//Get responses in queue
+	elements_in_queue = uxQueueMessagesWaiting(xQueueAtResponse);
+	if(elements_in_queue > 0){
+		if(xSemaphoreTake(xAtResponseMutex, portMAX_DELAY) == pdPASS){
+			while(element < elements_in_queue){
+				if(xQueueReceive(xQueueAtResponse, &response, 0) == pdPASS){
+					t_result = find_template_in_response(&response, template);
+					if (t_result.found == FOUND){
+						xSemaphoreGive(xAtResponseMutex);
+						return FOUND;
+					}
+					else{
+						xQueueSend(xQueueAtResponse, &response, 0);
+						element++;
+					}
 				}
-				else{
-					xQueueSend(xQueueAtResponse, &response, 0);
-					element++;
-				}
-				log("\n", DEBUG_LEVEL);
 			}
+			xSemaphoreGive(xAtResponseMutex);
 		}
-		xSemaphoreGive(xAtResponseMutex);
-	}
+}
+
 	return NOT_FOUND;
 }
 
 void flush_answers(void){
-	if(xSemaphoreTake(xAtResponseMutex, 0) == pdTRUE){
+	if(xSemaphoreTake(xAtResponseMutex, 0) == pdPASS){
 		xQueueReset(xQueueAtResponse);
 		xSemaphoreGive(xAtResponseMutex);
 	}
