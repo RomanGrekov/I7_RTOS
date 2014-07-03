@@ -26,6 +26,12 @@ static void prvProcessMenu(void *pvParameters);
 
 void USART2QueueSendString(uint8_t *data);
 
+
+enum{
+	tasks_not_created,
+	tasks_created
+};
+
 int main(void)
 {
 	InitRCC();
@@ -84,10 +90,13 @@ void prvShowAtResponse(void *pvParameters){
 
 void prvShowTechInfo( void *pvParameters ){
 	unsigned char symb[32];
-	portBASE_TYPE xStatus;
+	uint8_t is_success;
+	is_success = (uint8_t *)pvParameters;
 
 	strncpy(symb, "Free heap: ", 11);
 	itoa(xPortGetFreeHeapSize(), 10, symb+11);
+	if(is_success == tasks_created)strncpy(symb+15, " Init successful", 16);
+	else strncpy(symb+15, " Init fail", 10);
 	put_to_lcd_queue(symb);
 
 	vTaskDelete(NULL);
@@ -108,7 +117,7 @@ void prvInitall( void *pvParameters )
 {
 	portBASE_TYPE xStatus;
 	uint8_t results=0;
-
+	uint8_t is_success;
 
 	xUsart2TxMutex = xSemaphoreCreateMutex();
 	if (xUsart2TxMutex != NULL) {
@@ -197,13 +206,6 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
-	xStatus = xTaskCreate(prvShowTechInfo,(signed char*)"TechInfo",configMINIMAL_STACK_SIZE,
-            NULL, tskIDLE_PRIORITY + 1, NULL);
-	if(xStatus == pdPASS){
-		log("Task - tech info created\n", INFO_LEVEL);
-		results++;
-	}
-
 	xStatus = xTaskCreate(prvShowAtResponse,(signed char*)"ShowAtResponse",configMINIMAL_STACK_SIZE,
             NULL, tskIDLE_PRIORITY + 1, NULL);
 	if(xStatus == pdPASS){
@@ -237,12 +239,17 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
-	if(SimInit() == MODEM_TEST_PASS){
-		log("Modem - test passed\n", INFO_LEVEL);
-		results++;
+	if(results == 19){
+		log("Initialization successful!!!", INFO_LEVEL);
+		is_success = tasks_created;
+	}
+	else{
+		log("Initialization fail!!!", INFO_LEVEL);
+		is_success = tasks_not_created;
 	}
 
-	if(results == 21) log("Initialization successful!!!", INFO_LEVEL);
+	xStatus = xTaskCreate(prvShowTechInfo,(signed char*)"TechInfo",configMINIMAL_STACK_SIZE,
+			(uint8_t*)is_success, tskIDLE_PRIORITY + 1, NULL);
 
     vTaskDelete(NULL);
 }
