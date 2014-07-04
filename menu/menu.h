@@ -3,15 +3,9 @@
 #include "stm32f10x.h"
 #include <string.h>
 
-#include "views/sim_on_off.h"
-#include "views/sim_send_cmd.h"
-/*
-#include "views/main_screen.h"
-#include "views/add_user1_number.h"
-#include "views/add_user2_number.h"
-#include "views/set_state.h"
-#include "views/test_menu.h"
-*/
+#include "views/sim_on_off/sim_on_off.h"
+#include "views/add_phone/add_phone.h"
+
 typedef struct{
 	void       *Next;
 	void       *Previous;
