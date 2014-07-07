@@ -8,6 +8,8 @@
 #include "task.h"
 #include "queue.h"
 #include "semphr.h"
+#include "timers.h"
+#include "croutine.h"
 #include "hd44780/hd44780.h"
 #include "clock/clock.h"
 #include "common/common_funcs.h"
@@ -19,13 +21,12 @@
 #include "menu/menu.h"
 
 static void SetupHardware( void );
-static void prvLedBlink1( void *pvParameters );
+void LedBlinker(xTimerHandle xTimer);
 static void prvShowTechInfo( void *pvParameters );
 static void prvInitall( void *pvParameters );
 static void prvProcessMenu(void *pvParameters);
 
 void USART2QueueSendString(uint8_t *data);
-
 
 enum{
 	tasks_not_created,
@@ -64,7 +65,7 @@ void SetupHardware()
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
-void prvLedBlink1( void *pvParameters )
+void LedBlinker(xTimerHandle xTimer )
 {
 	while(1){
 		GPIO_SetBits(GPIOB,GPIO_Pin_0);
@@ -118,6 +119,7 @@ void prvInitall( void *pvParameters )
 	portBASE_TYPE xStatus;
 	uint8_t results=0;
 	uint8_t is_success;
+	xTimerHandle xLedTimer;
 
 	xUsart2TxMutex = xSemaphoreCreateMutex();
 	if (xUsart2TxMutex != NULL) {
@@ -192,12 +194,12 @@ void prvInitall( void *pvParameters )
 		results++;
 	}
 
-	xStatus = xTaskCreate(prvLedBlink1,(signed char*)"LED1",configMINIMAL_STACK_SIZE,
-	        NULL, tskIDLE_PRIORITY + 1, NULL);
-	if(xStatus == pdPASS){
-		log("Task - LED 1 created\n", INFO_LEVEL);
+	xLedTimer = xTimerCreate("LedTimer", 1000/portTICK_RATE_MS, pdTRUE, 0, LedBlinker);
+	if(xLedTimer != NULL){
+		log("Timer - LED blinker created\n", INFO_LEVEL);
 		results++;
 	}
+	xTimerStart(xLedTimer, 0);
 
 	xStatus = xTaskCreate(prvLcdShow,(signed char*)"LcdShow",configMINIMAL_STACK_SIZE,
 			NULL, tskIDLE_PRIORITY + 1, NULL);
