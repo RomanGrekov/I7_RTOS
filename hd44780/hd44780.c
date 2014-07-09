@@ -527,42 +527,50 @@ portBASE_TYPE put_to_lcd_queue(uint8_t *p){
 	portBASE_TYPE xStatus;
 	uint8_t i, a;
 
-	for(i=0; i<LCD_QUEUE_SIZE; i++){
-		if(*p){
-			a = *p;
-			p++;
-		}
-		else a=' ';
+	if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdPASS){
+		for(i=0; i<LCD_QUEUE_SIZE; i++){
+			if(*p){
+				a = *p;
+				p++;
+			}
+			else a=' ';
 
-		if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdPASS){
-			xStatus = xQueueSendToBack(xQueueLCD, &a, 0);
-			if (xStatus != pdPASS) return xStatus;
-			xSemaphoreGive(xLcdMutex);
+			if(xQueueSendToBack(xQueueLCD, &a, 0) != pdPASS){
+				xSemaphoreGive(xLcdMutex);
+				return xStatus;
+			}
 		}
+		xSemaphoreGive(xLcdMutex);
 	}
+	else return pdFAIL;
 	return pdPASS;
 }
 
 void prvLcdShow( void *pvParameters )
 {
-    uint8_t symb, buffer_cnt = 0;
+    uint8_t symb, buffer_cnt=0, el_in_queue=0;
     portBASE_TYPE xStatus;
 
     while(1){
-    	if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdPASS){
-    		xStatus = xQueueReceive(xQueueLCD, &symb, 0);
-			if (xStatus == pdPASS) {
-				if (buffer_cnt == 32){
-					lcd_clrscr();
-					buffer_cnt = 0;
-				}
-				if(buffer_cnt == 16){
-					lcd_goto(2,0);
-				}
-				lcd_putc(symb);
-				buffer_cnt++;
-			}
-			xSemaphoreGive(xLcdMutex);
+    	el_in_queue = uxQueueMessagesWaiting(xQueueLCD);
+    	if(el_in_queue > 0){
+    		if(xSemaphoreTake(xLcdMutex, portMAX_DELAY) == pdPASS){
+            	while(el_in_queue > 0){
+            		if(xQueueReceive(xQueueLCD, &symb, 0) == pdPASS){
+            			if (buffer_cnt == 32){
+							lcd_clrscr();
+							buffer_cnt = 0;
+						}
+						if(buffer_cnt == 16){
+							lcd_goto(2,0);
+						}
+						lcd_putc(symb);
+						buffer_cnt++;
+						el_in_queue--;
+            		}
+            	}
+            	xSemaphoreGive(xLcdMutex);
+    		}
     	}
     }
 }
