@@ -35,14 +35,6 @@ Contact information :
 #include "hd44780.h"
 #include "FreeRTOS.h"
 
-volatile uint8_t lcd_cnt=0;
-
-#if ( USE_PROGRESS_BAR )
-static int8u_t progress_bar[NUMBER_OF_CELL_ELEMENTS] = {0x00,0x10,0x18,0x1C,0x1E,0x1F};
-static int8u_t current_bar_load;
-#endif
-
-const uint8_t symbols[] = {'0','1','2','3','4','5','6','7','8','9'};
 gpio_init(void){
 
     RCC->APB2ENR |= RCC_APB2ENR_IOPBEN; //Clock port
@@ -73,16 +65,6 @@ static void LOWBITS(int8u_t data);
 //-------------------------------
 static void DELAY(volatile int32u_t us)
 {
-/*
- volatile int32u_t n, alfa, i;
- n = us * (MCU_CLK_VALUE / 1000000);
- i=0;
-
- for(alfa=0;alfa<n;alfa++)
- {
-	 i++;
- }
- */
 	int32u_t t=0;
 	if(us >= 1000)us=us/1000;
 	if(us >= 100)us=us/100;
@@ -92,16 +74,14 @@ static void DELAY(volatile int32u_t us)
 
 static void DELAY_native(volatile int32u_t us)
 {
+	volatile int32u_t n, alfa, i;
+	n = us * (configCPU_CLOCK_HZ / 1000000);
+	i=0;
 
- volatile int32u_t n, alfa, i;
- n = us * (configCPU_CLOCK_HZ / 1000000);
- i=0;
-
- for(alfa=0;alfa<n;alfa++)
- {
-	 i++;
- }
-
+	for(alfa=0;alfa<n;alfa++)
+	{
+		i++;
+	}
 }
 
 //-------------------------------
@@ -171,7 +151,6 @@ void lcd_clrscr(void)
 {
  lcd_cmd(0x01); // clear screen
  DELAY(200);
- lcd_cnt=0;
 }
 
 //-------------------------------
@@ -196,66 +175,6 @@ void lcd_goto(int8u_t line, int8u_t address)
 }
 
 //-------------------------------
-/* WRITE ENTIRE STRING 
-   TO SPECIFIED MEMORY */
-//-------------------------------
-void lcd_prints(const int8u_t *p)
-{/* WRITE A STRING TO LCD */
- ENABLE(LCD_WIRE,RS);
-  while(*p)
-  {
-#if ( USE_FORMATTED_OUTPUT )
-//-------------------------------
-// new line
-//-------------------------------
-   if((*p == '\n'))
-   {
-	DISABLE(LCD_WIRE,RS);
-	lcd_goto(2,0);
-	ENABLE(LCD_WIRE,RS);
-	p++;
-   }
-//-------------------------------
-// return
-//-------------------------------
-   else if((*p == '\r'))
-   {
-	DISABLE(LCD_WIRE,RS);
-	lcd_return();
-	ENABLE(LCD_WIRE,RS);
-	p++;
-   }
-//-------------------------------
-// tab
-//-------------------------------
-   else if((*p == '\t'))
-   {
-	DISABLE(LCD_WIRE,RS);
-	switch(TAB_SPACE)
-    {
-	 case 8: lcd_cmd(0x14,0); // cursor right shift
-     	  	 lcd_cmd(0x14,0); // cursor right shift
-     		 lcd_cmd(0x14,0); // cursor right shift
-     		 lcd_cmd(0x14,0); // cursor right shift
-     case 4: lcd_cmd(0x14,0); // cursor right shift
-     	  	 lcd_cmd(0x14,0); // cursor right shift
-     case 2: lcd_cmd(0x14,0); // cursor right shift
-     case 1: lcd_cmd(0x14,0); // cursor right shift
-    }
-	ENABLE(LCD_WIRE,RS);
-	p++;
-   }
-//-------------------------------
-// display
-//-------------------------------
-   else
-#endif
-    lcd_cmd(*p++);
- }
- DISABLE(LCD_WIRE,RS);
-}
-
-//-------------------------------
 /* WRITE A SINGLE CHARACTER 
    TO SPECIFIED MEMORY */
 //-------------------------------
@@ -264,30 +183,6 @@ void lcd_putc(int8u_t data)
  ENABLE(LCD_WIRE,RS);
  lcd_cmd(data);
  DISABLE(LCD_WIRE,RS);
-}
-
-//-------------------------------
-/* LOAD USER-DEFINED CHARACTER IN CGRAM */
-//-------------------------------
-void lcd_load(int8u_t* vector, int8u_t position)
-{/* USE CGRAM CHAR SPACE: 0 to 7 */
- int8u_t i;
- lcd_goto(CGRAM,position*DRAW_CHAR_SIZE);
- for(i=0;i<DRAW_CHAR_SIZE;i++)
-  lcd_putc(vector[i]);
-}
-
-//-------------------------------
-/* DISPLAY USER-DEFINED CHARACTER ON DDRAM */
-//-------------------------------
-void lcd_drawchar( int8u_t* vector, 
-	 			   int8u_t position, 
-	 			   int8u_t line, 
-				   int8u_t address )
-{/* USE CGRAM CHAR SPACE */
- lcd_load(vector,position);
- lcd_goto(line,address);
- lcd_putc(position);
 }
 
 //-------------------------------
@@ -362,81 +257,6 @@ void lcd_numTOstr(int16u_t value, int8u_t nDigit)
  }
 }
 
-#if ( USE_PROGRESS_BAR )
-//-------------------------------
-/* PRELOAD PROGRESS BAR ELEMENTS IN CGRAM */
-//-------------------------------
-void lcd_readybar(void)
-{
- int8u_t i,j;
- for(i=0;i<NUMBER_OF_CELL_ELEMENTS;i++)
- {
-  lcd_goto(CGRAM,(i*DRAW_CHAR_SIZE));
-  for(j=0;j<PROGRESS_BAR_HEIGHT;j++)
-   lcd_putc(progress_bar[i]);
- }
- lcd_goto(1,0);
-}
-
-//-------------------------------
-/* DRAW PROGRESS BAR ON DDRAM */
-//-------------------------------
-void lcd_drawbar(int8u_t next_bar_load)
-{
- int8u_t i = current_bar_load;
- int8u_t cell = (current_bar_load/FULL_ELEMENT); // find current cell position in progress bar
- if(next_bar_load > NUMBER_OF_BAR_ELEMENTS ) next_bar_load = NUMBER_OF_BAR_ELEMENTS;
- if( next_bar_load > current_bar_load )
- {
-//-------------------------------
-// increment progress bar code //
-//-------------------------------
-  lcd_goto(DRAW_PROGRESS_BAR_ON_LINE, cell); // goto current cell position
-  while( i != next_bar_load )
-  {
-   i++;
-   if( CELL_RATIO(i) == 0 ) lcd_putc( FULL_ELEMENT );
-    else lcd_putc( CELL_RATIO(i) );
-   if( CELL_RATIO(i) ) cursor_shift(LEFT);
-  }
- }
- else
- {
-//-------------------------------
-// decrement progress bar code //
-//-------------------------------
-  if(CELL_RATIO(i) == 0) cell--;
-  lcd_goto(DRAW_PROGRESS_BAR_ON_LINE, cell); // goto current cell position
-  lcd_cmd(ENTRY_MODE_DEC_NO_SHIFT,0); // decrement lcd cursor
-  while( i != next_bar_load )
-  {
-   i--;
-   lcd_putc( CELL_RATIO(i) );
-   if( CELL_RATIO(i) ) cursor_shift(RIGHT);
-  }
-  lcd_cmd(ENTRY_MODE_INC_NO_SHIFT,0); // increment lcd cursor
- }
-//-------------------------------
-//       store new value       //
-//-------------------------------
- current_bar_load = next_bar_load;
-}
-
-//-------------------------------
-/*  CLEAR ENTYRE PROGRESS BAR  */
-//-------------------------------
-void lcd_clearbar(void)
-{
- int8u_t i;
- lcd_goto(DRAW_PROGRESS_BAR_ON_LINE, (PROGRESS_BAR_WIDTH - 1));
- lcd_cmd(ENTRY_MODE_DEC_NO_SHIFT,0); // decrement
- for(i=0;i<PROGRESS_BAR_WIDTH;i++)
-  lcd_putc(' ');
- lcd_cmd(ENTRY_MODE_INC_NO_SHIFT,0); // increment
- current_bar_load = 0;
-}
-#endif
-
 //-------------------------------
 /* CONFIGURE 4-BIT DISPLAY INTERFACE */
 //-------------------------------
@@ -479,38 +299,12 @@ void turn_off_cursor(void){
  lcd_cmd(DISPLAY_CTRL_DispOn_BlkOff_CrsOff); // 1, lcd, cursor, blink
 }
 
-void lcd_putcc(uint8_t sym){
-	if (lcd_cnt == 16)lcd_goto(2, 0);
-	if (lcd_cnt == 32)
-	{
-		lcd_clrscr();
-		lcd_cnt = 0;
-		lcd_goto(1, 0);
-	}
-	lcd_putc(sym);
-	lcd_cnt++;
-}
-
-void LCDPrintS(uint8_t *p)
+void lcd_prints(const int8u_t *p)
 {
 	while(*p)
 	{
-		lcd_putcc(*p++);
+		lcd_putc(*p++);
 	}
-}
-void LCDLine(uint8_t line){
-	switch(line){
-	case 0:
-		lcd_cnt = 32;
-		break;
-	case 1:
-		lcd_cnt = 16;
-		break;
-	}
-}
-
-uint8_t GetSymb(uint8_t digit){
-	return symbols[digit];
 }
 
 void shift_display(uint8_t direction)

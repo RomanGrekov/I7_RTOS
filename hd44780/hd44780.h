@@ -88,13 +88,6 @@ extern "C" {
 #define USE_FORMATTED_OUTPUT	 	  0 /* 1 (true) or 0 (false) */
 #define TAB_SPACE					  4 /* 1, 2, 4 or 8 */
 //-------------------------------
-// PROGRESS BAR DRAWING OPTIONS
-//-------------------------------
-#define USE_PROGRESS_BAR			  0  /* 1 or 0 */
-#define DRAW_PROGRESS_BAR_ON_LINE	  2  /* Select lcd line: 1, 2, 4, ... */
-#define PROGRESS_BAR_HEIGHT			  5  /* in pixel: 1(min),2,3,4,5,6,7,8(max) */
-#define PROGRESS_BAR_WIDTH			  16 /* Number of chars in lcd line: ... , 8, 16, 20 */
-//-------------------------------
 // OTHER MACROS
 //-------------------------------
 #define CGRAM	 	   	  		      5 /* used in "lcd_goto(CGRAM,address)" function */
@@ -116,8 +109,6 @@ void lcd_return(void);
 void lcd_goto(int8u_t line, int8u_t address);
 void lcd_prints(const int8u_t *p);
 void lcd_putc(int8u_t data);
-void lcd_load(int8u_t *vector, int8u_t position);
-void lcd_drawchar(int8u_t *vector, int8u_t position, int8u_t line, int8u_t address);
 void lcd_backspace(void);
 void lcd_scroll(int8u_t direction);
 void cursor_shift(int8u_t direction);
@@ -130,24 +121,13 @@ void turn_on_cursor(void);
 void turn_off_cursor(void);
 void shift_display(uint8_t direction);
 
-void lcd_putcc(uint8_t sym);
-void LCDPrintS(uint8_t *p);
-void LCDLine(uint8_t line);
-uint8_t GetSymb(uint8_t digit);
 
 portBASE_TYPE put_to_lcd_queue(uint8_t *p);
 static void DELAY_native(volatile int32u_t us);
 static void LCD_STROBE_native(uint32_t us);
 void lcd_cmd_native(int8u_t data);
 void prvLcdShow( void *pvParameters );
-//-------------------------------
-// PROGRESS BAR API
-//-------------------------------
-#if ( USE_PROGRESS_BAR )
-void lcd_readybar(void);
-void lcd_drawbar(int8u_t data);
-void lcd_clearbar(void);
-#endif
+
 
 #ifdef __cplusplus
 }
