@@ -38,10 +38,6 @@ Contact information :
 #include "mac.h"
 #include "globs.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 //-------------------------------
 /* SET LCD<->MCU CONNECTIONS */
 //-------------------------------
@@ -128,13 +124,5 @@ static void LCD_STROBE_native(uint32_t us);
 void lcd_cmd_native(int8u_t data);
 void prvLcdShow( void *pvParameters );
 
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif /* HD44780_H */
 
-//-------------------------------
-/* END OF FILE */
-//-------------------------------
