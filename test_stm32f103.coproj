@@ -81,9 +81,9 @@
     <File name="at_parser/at_parser.c" path="at_parser/at_parser.c" type="1"/>
     <File name="kb_driver" path="" type="2"/>
     <File name="globs.h" path="globs.h" type="1"/>
-    <File name="sim900/sim900.c" path="sim900/sim900.c" type="1"/>
     <File name="menu/views/sim_on_off/sim_on_off.c" path="menu/views/sim_on_off/sim_on_off.c" type="1"/>
     <File name="FreeRTOS/source/include/timers.h" path="FreeRTOS/source/include/timers.h" type="1"/>
+    <File name="sim900/sim900.c" path="sim900/sim900.c" type="1"/>
     <File name="stm_lib/inc/stm32f10x_tim.h" path="stm_lib/inc/stm32f10x_tim.h" type="1"/>
     <File name="cmsis_boot" path="" type="2"/>
     <File name="USART/usart.c" path="USART/usart.c" type="1"/>
@@ -151,10 +151,10 @@
     <File name="FreeRTOS/source/include/list.h" path="FreeRTOS/source/include/list.h" type="1"/>
     <File name="FreeRTOS/source" path="" type="2"/>
     <File name="stm_lib/src/stm32f10x_flash.c" path="stm_lib/src/stm32f10x_flash.c" type="1"/>
-    <File name="cmsis_boot/system_stm32f10x.h" path="cmsis_boot/system_stm32f10x.h" type="1"/>
     <File name="FreeRTOS/source/readme.txt" path="FreeRTOS/source/readme.txt" type="1"/>
-    <File name="FreeRTOS/source/portable" path="" type="2"/>
     <File name="hd44780/hd44780.h" path="hd44780/hd44780.h" type="1"/>
+    <File name="FreeRTOS/source/portable" path="" type="2"/>
+    <File name="cmsis_boot/system_stm32f10x.h" path="cmsis_boot/system_stm32f10x.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_rcc.h" path="stm_lib/inc/stm32f10x_rcc.h" type="1"/>
     <File name="syscalls" path="" type="2"/>
     <File name="menu/views" path="" type="2"/>

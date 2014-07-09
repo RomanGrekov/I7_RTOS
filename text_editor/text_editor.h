@@ -1,7 +1,8 @@
 #ifndef TEXT_EDITOR_H
 #define TEXT_EDITOR_H
-/*
+
 #include "stm32f10x.h"
+/*
 #include "kb_driver/keyboard_driver.h"
 #include "globs.h"
 #include "menu/menu.h"
@@ -46,4 +47,9 @@ typedef	struct
 void init_editor(EditorConf config);
 uint8_t *get_text(void);
 */
+typedef struct{
+	uint8_t keys_size;
+	uint8_t max_variants_size;
+	void *alphabet;
+}keyboard;
 #endif

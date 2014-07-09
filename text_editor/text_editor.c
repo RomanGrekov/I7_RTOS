@@ -317,3 +317,6 @@ uint8_t *get_text(void){
 	return response;
 }
 */
+void enter_text(void){
+
+}
