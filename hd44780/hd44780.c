@@ -292,9 +292,15 @@ void lcd_init(void)
 #endif
 }
 
-void turn_on_cursor(void){
- lcd_cmd(DISPLAY_CTRL_DispOn_BlkOff_CrsOn); // 1, lcd, cursor, blink
+void turn_on_cursor(uint8_t blinking){
+	if(blinking == CURSOR_BLINK){
+		lcd_cmd(DISPLAY_CTRL_DispOn_BlkOn_CrsOn);
+	}
+	else{
+		lcd_cmd(DISPLAY_CTRL_DispOn_BlkOff_CrsOn); // 1, lcd, cursor, blink
+	}
 }
+
 void turn_off_cursor(void){
  lcd_cmd(DISPLAY_CTRL_DispOn_BlkOff_CrsOff); // 1, lcd, cursor, blink
 }
