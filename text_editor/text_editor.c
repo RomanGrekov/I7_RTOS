@@ -317,6 +317,19 @@ uint8_t *get_text(void){
 	return response;
 }
 */
-void enter_text(void){
+void text_editor_init(keyboard *init_struct){
+	lcd_clrscr();
+	lcd_prints(init_struct->label);
+	lcd_goto(2,0);
+	lcd_prints(init_struct->init_text);
+	turn_on_cursor(init_struct->blinking);
+}
+
+void text_editor_close(void){
+	turn_off_cursor();
+	lcd_clrscr();
+}
+
+uint8_t* enter_text(uint8_t key, uint8_t duration){
 
 }

@@ -47,9 +47,18 @@ typedef	struct
 void init_editor(EditorConf config);
 uint8_t *get_text(void);
 */
+
+
 typedef struct{
+	uint8_t blinking;
 	uint8_t keys_size;
 	uint8_t max_variants_size;
-	void *alphabet;
+	uint8_t *alphabet;
+	uint8_t *label;
+	uint8_t *init_text;
 }keyboard;
+
+void text_editor_init(keyboard *init_struct);
+uint8_t* enter_text(uint8_t key, uint8_t duration);
+void text_editor_close(void);
 #endif
