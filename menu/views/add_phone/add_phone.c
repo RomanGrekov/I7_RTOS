@@ -46,4 +46,5 @@ void add_phone(void){
 		}
 */
 	}while (btn_val != '2');
+	text_editor_close();
 }

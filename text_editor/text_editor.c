@@ -1,4 +1,7 @@
 #include "text_editor.h"
+#include "kb_driver/keyboard_driver.h"
+
+keyboard *got_kb;
 /*
 void display_symbol(uint8_t btn, uint8_t duration, uint8_t press_counter);
 uint8_t is_service_symbol(uint8_t symb);
@@ -318,6 +321,7 @@ uint8_t *get_text(void){
 }
 */
 void text_editor_init(keyboard *init_struct){
+	got_kb = init_struct;
 	lcd_clrscr();
 	lcd_prints(init_struct->label);
 	lcd_goto(2,0);
@@ -330,6 +334,73 @@ void text_editor_close(void){
 	lcd_clrscr();
 }
 
-uint8_t* enter_text(uint8_t key, uint8_t duration){
+uint8_t get_real_key(uint8_t key, uint8_t duration){
+	enum{
+		NEW_KEY,
+		SAME_KEY,
+		DIFF_KEY
+	};
+	static uint8_t old_key=0;
+	static uint8_t state=NEW_KEY;
+	xTimerHandle xBtnTimer;
 
+	if(duration == LONG_PRESS){
+		return get_btn(key, 1, duration);
+	}
+
+	switch(state){
+	case NEW_KEY:
+		xBtnTimer = xTimerCreate("BtnTimer", 1000/portTICK_RATE_MS, pdFALSE, 1, BtnApproved);
+		if(xBtnTimer == NULL)log("Timer for button isn't created", ERROR_LEVEL);
+		if(xTimerStart(xBtnTimer, 10) == pdFAIL)log("Timer for button can't be started", ERROR_LEVEL);
+	break;
+	}
+
+
+
+}
+
+uint8_t get_line(uint8_t btn){
+	switch(btn){
+	case '#':
+		return btn - 25;
+	case '*':
+		return btn - 31;
+	default:
+		return btn - 48;
+	}
+}
+
+uint8_t pull_key(uint8_t line, uint8_t position){
+	return got_kb->alphabet[line][position];
+}
+
+uint8_t get_btn(uint8_t btn, uint8_t pressed, uint8_t duration){
+	uint8_t line;
+	uint8_t btn;
+	uint8_t pos;
+	uint8_t variants;
+	uint8_t ost;
+
+	line = get_line(btn);
+
+	//If button was pressed for a long time
+	if(duration == LONG_PRESS)return pull_key(line, got_kb->max_variants_size-1);
+
+	variants = get_vars(line);
+	if(pressed <= variants)return pull_key(line, pressed-1);
+
+	ost = pressed % variants;
+	if(ost == 0)return pull_key(line, variants-1);
+	return pull_key(line, ost-1);
+
+}
+
+uint8_t get_vars(uint8_t line){
+	uint8_t i;
+	//when we get variants we shouldn't count last symbol for long press
+	for(i=0; i < got_kb->max_variants_size-1; i++){
+		if(got_kb->alphabet[line][i] == 0)return i;
+	}
+	return i+1;
 }
