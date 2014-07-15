@@ -13,6 +13,11 @@ enum{
 	BTN_EXISTS
 };
 
+enum{
+	SHORT_PRESS,
+	LONG_PRESS
+};
+
 
 #define KB_PORT GPIOA
 

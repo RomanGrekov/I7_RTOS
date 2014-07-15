@@ -43,10 +43,10 @@ void kb_strobe(void)
 			else{
 				if (check_buttons[col][row] >= trashhold1 &&
 						check_buttons[col][row] <= trashhold2){
-					add_button(col, row, '0');//0 means short press
+					add_button(col, row, SHORT_PRESS);//0 means short press
 				}
 				if(check_buttons[col][row] > trashhold2){
-					add_button(col, row, '1');//1 means long press
+					add_button(col, row, LONG_PRESS);//1 means long press
 				}
 
 				check_buttons[col][row]=0;
