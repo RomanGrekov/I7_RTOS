@@ -1,5 +1,9 @@
 #include "text_editor.h"
 #include "kb_driver/keyboard_driver.h"
+#include "timers.h"
+#include "FreeRTOS.h"
+
+uint8_t current_symbol;
 
 keyboard *got_kb;
 /*
@@ -327,6 +331,18 @@ void text_editor_init(keyboard *init_struct){
 	lcd_goto(2,0);
 	lcd_prints(init_struct->init_text);
 	turn_on_cursor(init_struct->blinking);
+
+	vSemaphoreCreateBinary(xKeyApprovedSemaphore);
+	if (xKeyApprovedSemaphore == NULL) log("Can't create binary key semaphore", ERROR_LEVEL);
+	xSemaphoreTake(xBinaryKeySemaphore, portMAX_DELAY);// Clear semaphore for the first time
+
+	vSemaphoreCreateBinary(xSymbolChangedSemaphore);
+	if (xSymbolChangedSemaphore == NULL) log("Can't create binary key semaphore", ERROR_LEVEL);
+	xSemaphoreTake(xSymbolChangedSemaphore, portMAX_DELAY);// Clear semaphore for the first time
+
+	xCurrentSymbolMutex = xSemaphoreCreateMutex();
+	if (xCurrentSymbolMutex == NULL) log("Can't create current symbol mutex", ERROR_LEVEL);
+
 }
 
 void text_editor_close(void){
@@ -334,7 +350,7 @@ void text_editor_close(void){
 	lcd_clrscr();
 }
 
-uint8_t get_real_key(uint8_t key, uint8_t duration){
+void key_controller(uint8_t key, uint8_t duration){
 	enum{
 		NEW_KEY,
 		SAME_KEY,
@@ -350,14 +366,40 @@ uint8_t get_real_key(uint8_t key, uint8_t duration){
 
 	switch(state){
 	case NEW_KEY:
-		xBtnTimer = xTimerCreate("BtnTimer", 1000/portTICK_RATE_MS, pdFALSE, 1, BtnApproved);
+		if(xSemaphoreTake(xCurrentSymbolMutex, 10/portTICK_RATE_MS) == pdTRUE){
+			xSemaphoreGive(xSymbolChangedSemaphore);
+			current_symbol = get_btn(key, 1, SHORT_PRESS);
+			xSemaphoreGive(xCurrentSymbolMutex);
+		}
+		xBtnTimer = xTimerCreate("BtnTimer", 1000/portTICK_RATE_MS, pdFALSE, 1, SymbolApproved);
 		if(xBtnTimer == NULL)log("Timer for button isn't created", ERROR_LEVEL);
 		if(xTimerStart(xBtnTimer, 10) == pdFAIL)log("Timer for button can't be started", ERROR_LEVEL);
 	break;
 	}
+}
 
+uint8_t read_symbol(void){
+	if(xSemaphoreTake(xKeyApprovedSemaphore, 10) == pdPASS){
+		if(xSemaphoreTake(xCurrentSymbolMutex, 10) == pdPASS){
+				xSemaphoreGive(xCurrentSymbolMutex);
+				return current_symbol;
+		}
+	}
+	return 0;
+}
 
+uint8_t read_tmp_symbol(void){
+	if(xSemaphoreTake(xSymbolChangedSemaphore, 10) == pdPASS){
+		if(xSemaphoreTake(xCurrentSymbolMutex, 10) == pdPASS){
+			xSemaphoreGive(xCurrentSymbolMutex);
+			return current_symbol;
+		}
+	}
+	return 0;
+}
 
+void SymbolApproved(xTimerHandle xTimer){
+	xSemaphoreGive(xKeyApprovedSemaphore);
 }
 
 uint8_t get_line(uint8_t btn){
