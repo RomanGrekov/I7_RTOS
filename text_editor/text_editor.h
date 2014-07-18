@@ -59,6 +59,9 @@ typedef struct{
 }keyboard;
 
 void text_editor_init(keyboard *init_struct);
-uint8_t* enter_text(uint8_t key, uint8_t duration);
 void text_editor_close(void);
+void key_controller(uint8_t key, uint8_t duration);
+uint8_t read_symbol(void);
+uint8_t read_tmp_symbol(void);
+
 #endif

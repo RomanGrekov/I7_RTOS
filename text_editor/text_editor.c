@@ -4,8 +4,26 @@
 #include "FreeRTOS.h"
 
 uint8_t current_symbol;
+uint8_t tmp_symbol;
 
 keyboard *got_kb;
+
+enum{
+	NEW_KEY,
+	NOT_NEW_KEY,
+	SAME_KEY,
+	DIFF_KEY
+};
+static uint8_t state=NEW_KEY;
+static uint8_t pressed;
+
+void SymbolApproved(xTimerHandle xTimer);
+uint8_t get_line(uint8_t btn);
+uint8_t pull_key(uint8_t line, uint8_t position);
+uint8_t pull_btn(uint8_t btn, uint8_t pressed, uint8_t duration);
+uint8_t get_vars(uint8_t line);
+uint8_t get_vars_short(uint8_t key);
+uint8_t a_pull(uint8_t y, uint8_t x);
 /*
 void display_symbol(uint8_t btn, uint8_t duration, uint8_t press_counter);
 uint8_t is_service_symbol(uint8_t symb);
@@ -334,7 +352,7 @@ void text_editor_init(keyboard *init_struct){
 
 	vSemaphoreCreateBinary(xKeyApprovedSemaphore);
 	if (xKeyApprovedSemaphore == NULL) log("Can't create binary key semaphore", ERROR_LEVEL);
-	xSemaphoreTake(xBinaryKeySemaphore, portMAX_DELAY);// Clear semaphore for the first time
+	xSemaphoreTake(xKeyApprovedSemaphore, portMAX_DELAY);// Clear semaphore for the first time
 
 	vSemaphoreCreateBinary(xSymbolChangedSemaphore);
 	if (xSymbolChangedSemaphore == NULL) log("Can't create binary key semaphore", ERROR_LEVEL);
@@ -351,31 +369,59 @@ void text_editor_close(void){
 }
 
 void key_controller(uint8_t key, uint8_t duration){
-	enum{
-		NEW_KEY,
-		SAME_KEY,
-		DIFF_KEY
-	};
+
 	static uint8_t old_key=0;
-	static uint8_t state=NEW_KEY;
 	xTimerHandle xBtnTimer;
 
 	if(duration == LONG_PRESS){
-		return get_btn(key, 1, duration);
+		current_symbol = pull_btn(key, 1, LONG_PRESS);
+		xSemaphoreGive(xSymbolChangedSemaphore);
+		xSemaphoreGive(xKeyApprovedSemaphore);
+		return;
 	}
+	if((state == NOT_NEW_KEY) && key == old_key)state = SAME_KEY;
+	if((state == SAME_KEY || state == NOT_NEW_KEY) && key != old_key) state = DIFF_KEY;
 
 	switch(state){
-	case NEW_KEY:
-		if(xSemaphoreTake(xCurrentSymbolMutex, 10/portTICK_RATE_MS) == pdTRUE){
-			xSemaphoreGive(xSymbolChangedSemaphore);
-			current_symbol = get_btn(key, 1, SHORT_PRESS);
-			xSemaphoreGive(xCurrentSymbolMutex);
-		}
-		xBtnTimer = xTimerCreate("BtnTimer", 1000/portTICK_RATE_MS, pdFALSE, 1, SymbolApproved);
-		if(xBtnTimer == NULL)log("Timer for button isn't created", ERROR_LEVEL);
-		if(xTimerStart(xBtnTimer, 10) == pdFAIL)log("Timer for button can't be started", ERROR_LEVEL);
-	break;
+		case NEW_KEY:
+			if(xSemaphoreTake(xCurrentSymbolMutex, 10/portTICK_RATE_MS) == pdTRUE){
+				state = NOT_NEW_KEY;
+				pressed = 1;
+				xSemaphoreGive(xSymbolChangedSemaphore);
+				current_symbol = pull_btn(key, pressed, SHORT_PRESS);
+
+				xBtnTimer = xTimerCreate("BtnTimer", 1000/portTICK_RATE_MS, pdFALSE, 1, SymbolApproved);
+				if(xBtnTimer == NULL)log("Timer for button isn't created", ERROR_LEVEL);
+				if(xTimerStart(xBtnTimer, 10) == pdFAIL)log("Timer for button can't be started", ERROR_LEVEL);
+
+				old_key = key;
+				xSemaphoreGive(xCurrentSymbolMutex);
+			}
+		break;
+		case SAME_KEY:
+			if(pressed == get_vars_short(key)) pressed = 0;
+			pressed++;
+
+			if(xSemaphoreTake(xCurrentSymbolMutex, 10/portTICK_RATE_MS) == pdTRUE){
+				xSemaphoreGive(xSymbolChangedSemaphore);
+				current_symbol = pull_btn(key, pressed, SHORT_PRESS);
+
+				if(xTimerReset(xBtnTimer, 10) == pdFAIL)log("Failed to reset btn timer when same btn", ERROR_LEVEL);
+
+				xSemaphoreGive(xCurrentSymbolMutex);
+			}
+		break;
+		case DIFF_KEY:
+			state = NEW_KEY;
+			xSemaphoreGive(xKeyApprovedSemaphore);
+			key_controller(key, duration);
+		break;
 	}
+}
+
+void SymbolApproved(xTimerHandle xTimer){
+	xSemaphoreGive(xKeyApprovedSemaphore);
+	state = NEW_KEY;
 }
 
 uint8_t read_symbol(void){
@@ -398,10 +444,6 @@ uint8_t read_tmp_symbol(void){
 	return 0;
 }
 
-void SymbolApproved(xTimerHandle xTimer){
-	xSemaphoreGive(xKeyApprovedSemaphore);
-}
-
 uint8_t get_line(uint8_t btn){
 	switch(btn){
 	case '#':
@@ -414,13 +456,11 @@ uint8_t get_line(uint8_t btn){
 }
 
 uint8_t pull_key(uint8_t line, uint8_t position){
-	return got_kb->alphabet[line][position];
+	return a_pull(line,position);
 }
 
-uint8_t get_btn(uint8_t btn, uint8_t pressed, uint8_t duration){
+uint8_t pull_btn(uint8_t btn, uint8_t pressed, uint8_t duration){
 	uint8_t line;
-	uint8_t btn;
-	uint8_t pos;
 	uint8_t variants;
 	uint8_t ost;
 
@@ -442,7 +482,18 @@ uint8_t get_vars(uint8_t line){
 	uint8_t i;
 	//when we get variants we shouldn't count last symbol for long press
 	for(i=0; i < got_kb->max_variants_size-1; i++){
-		if(got_kb->alphabet[line][i] == 0)return i;
+		if(a_pull(line,i) == 0)return i;
 	}
 	return i+1;
+}
+
+uint8_t get_vars_short(uint8_t key){
+	uint8_t line;
+
+	line = get_line(key);
+	return get_vars(line);
+}
+
+uint8_t a_pull(uint8_t y, uint8_t x){
+	return *(got_kb->alphabet+(y*got_kb->max_variants_size +x));
 }

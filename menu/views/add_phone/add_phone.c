@@ -6,6 +6,7 @@
 void add_phone(void){
 	button *btn;
 	uint8_t btn_val;
+	uint8_t symbol;
 
 	keyboard my_kb =
 			{CURSOR_BLINK,
@@ -30,6 +31,18 @@ void add_phone(void){
 	do{
 		btn = get_btn();
 		btn_val = btn->button;
+		if(btn_val){
+			key_controller(btn_val, btn->duration);
+		}
+		symbol = read_tmp_symbol();
+		if(symbol){
+			lcd_putc(symbol);
+		}
+		symbol = read_symbol();
+		if(symbol){
+			cursor_shift(RIGHT);
+		}
+
 /*
 		switch (btn_val){
 		case '2':
